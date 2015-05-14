@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mesnews;
+package mesnews.db;
 
 import mesnews.model.News;
 import java.io.FileInputStream;
@@ -21,55 +21,16 @@ import java.util.TreeSet;
  *
  * @author Margarita
  */
-//Singletione
-public class BaseDeNews implements Serializable {
+//Singletone
+public class NewsFileService extends NewsAbstractService implements Serializable {
 
-    public static final BaseDeNews INSTANCE = new BaseDeNews();
-    private TreeSet<News> news;
+    public static final NewsFileService INSTANCE = new NewsFileService();
 
     //private consructor for singletone
-    private BaseDeNews() {
+    private NewsFileService() {
         if (news == null) {
             news = new TreeSet();
         }
-    }
-
-    //getteurs and setteurs pour collection
-    public TreeSet<News> getNews() {
-        return news;
-    }
-
-    public void setNews(TreeSet<News> news) {
-        this.news = news;
-    }
-
-    //ajoute une nouvelle
-    public void ajoute(News n) {
-        news.add(n);
-    }
-
-    public void afficher() {
-        if (news.isEmpty()) {
-            System.out.println("La base est vide!");
-        } else {
-            System.out.println("Un total de " + news.size() + " entr�es");
-        }
-        for (News n : news) {
-            System.out.println(n);
-        }
-    }
-
-    public TreeSet<News> rechercher(String nom) {
-        TreeSet<News> results = new TreeSet<>();
-        String[] cles = nom.split("\\W+");
-        for (News n : news) {
-            for (String cle : cles) {
-                if (n.getTitre().contains(cle)) {
-                    results.add(n);
-                }
-            }
-        }
-        return results;
     }
 
     //sauvegarder au fichier
@@ -88,7 +49,7 @@ public class BaseDeNews implements Serializable {
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object obj = ois.readObject();
         ois.close();
-        BaseDeNews loaded = (BaseDeNews) obj;
+        NewsFileService loaded = (NewsFileService) obj;
         this.news = loaded.news;
     }
 

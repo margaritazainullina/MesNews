@@ -7,12 +7,13 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/news</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/news?autoReconnect=true&amp;useUnicode=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf-8</property>    
+
         <property name="connection.username">root</property>
         <property name="connection.password"></property>
         
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">10</property>
         
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -26,10 +27,12 @@
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
         
-        <property name="hbm2ddl.auto">validate</property>
+        <!-- Create database structure if it doesn't exist -->
+        <property name="hbm2ddl.auto">update</property>
  
- 		<mapping class="mesnews.model.Auteur"/>
- 		
- 		 
+        <mapping class="mesnews.model.Auteur"/>
+        <mapping class="mesnews.model.Photo"/>
+        <mapping class="mesnews.model.Article"/>
+        <mapping class="mesnews.model.News"/> 		
     </session-factory>
 </hibernate-configuration>

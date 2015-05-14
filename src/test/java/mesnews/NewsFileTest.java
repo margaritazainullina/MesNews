@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  *
  * @author Margarita
  */
-public class BaseDeNewsTest {
+public class NewsFileTest {
 /*
     BaseDeNews news;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

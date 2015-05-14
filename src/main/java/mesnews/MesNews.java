@@ -5,14 +5,25 @@
  */
 package mesnews;
 
+import mesnews.db.NewsDBService;
 import mesnews.model.News;
-import mesnews.model.ArticleDePresse;
+import mesnews.model.Article;
 import mesnews.model.Photo;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import mesnews.service.AuteurService;
+import java.util.Set;
+import mesnews.model.Auteur;
+import mesnews.dao.ArticleDao;
+import mesnews.dao.AuteurDao;
+import mesnews.dao.PhotoDao;
+import mesnews.db.NewsAbstractService;
 
 /**
  *
@@ -20,14 +31,36 @@ import mesnews.service.AuteurService;
  */
 public class MesNews {
 
-    static BaseDeNews base;
+    static NewsAbstractService base;
 
-    public static void main(String[] args) {
-       // afficherMenu();
-         // Read
-     System.out.println("******* READ *******");
-     List employees = AuteurService.listAuteurs();
-     System.out.println("Total Employees: " + employees.size());
+    public static void main(String[] args) throws MalformedURLException {
+        // afficherMenu();
+        // Read
+        System.out.println("******* READ *******");
+        List<Auteur> auteurs = AuteurDao.listAuteurs();
+        System.out.println("Total Auteurs: " + auteurs.size());
+
+        Article a1 = new Article("Quaterly Sales meeting", LocalDate.now(), new HashSet<Auteur>(), new URL("http://111.com"), "Bla bla blaaa", true);
+        Article a2 = new Article("Something wonderful", LocalDate.now(), new HashSet<Auteur>(), new URL("http://111.com"), "Bla bla blaaaaaa~", false);
+
+        Auteur auteur1 = auteurs.get(0);
+        auteur1.setPrenom("123");
+        Auteur auteur2 = auteurs.get(1);
+
+        a1.getAuteurs().add(auteur1);
+        a1.getAuteurs().add(auteur1);
+        a2.getAuteurs().add(auteur2);
+
+        Photo p = new Photo(0, ".jpg", 600, 800, true, "Photo1", LocalDate.now(), new HashSet<Auteur>() {
+        }, new URL("http://asdf.com"));
+        p.getAuteurs().add(auteur1);
+
+        AuteurDao.saveAuteur(auteur1);
+        PhotoDao.savePhoto(p);
+        ArticleDao.saveArticle(a1);
+        ArticleDao.saveArticle(a2);
+        
+        List<Auteur> aaa = AuteurDao.listAuteurs();
     }
 
     public static void afficherMenu() {
@@ -69,14 +102,14 @@ public class MesNews {
     /*cree une nouvelle base dâ€™actualitee, câ€™est-`a-dire un ensemble de news dans la collection ;
      attention, cette action est `a rÂ´ealiser une seule fois au dÂ´ebut, quand la base nâ€™existe pas encore.*/
     public static void creer() {
-        base = BaseDeNews.INSTANCE;
+        base = NewsDBService.INSTANCE;
         System.out.println("La base de donnee est cree");
     }
 
     /*charge une base dâ€™actualitÂ´e existante qui a Â´etÂ´e enregistrÂ´ee prÂ´ealablement sur le disque
      dur de lâ€™ordinateur.*/
     public static void ouvrir() {
-        System.out.println("Entrez le chemin vers le fichier:");
+       /* System.out.println("Entrez le chemin vers le fichier:");
         String filepath = Lire.S();
         try {
             base.deserialize(filepath);
@@ -87,13 +120,13 @@ public class MesNews {
             System.err.println("L'exception d'ouvrir");
         } catch (ClassNotFoundException ex) {
             System.out.println("Le class est introuvable");
-        }
+        }*/
 
     }
 
     /*Sauvegarder : sauvegarde la base courante sur le disque dur de lâ€™ordinateur.*/
     public static void sauvegarder() {
-        System.out.println("Entrez le chemin vers le fichier:");
+       /* System.out.println("Entrez le chemin vers le fichier:");
         String filepath = Lire.S();
         try {
             base.serialize(filepath);
@@ -103,7 +136,7 @@ public class MesNews {
         } catch (IOException ex) {
             System.err.println("L'exception d'ouvrir");
         }
-
+*/
     }
 
     /* affche le contenu total de la base.*/
@@ -123,7 +156,7 @@ public class MesNews {
         News n = null;
         switch (Lire.i()) {
             case 1: {
-                n = new ArticleDePresse();
+                n = new Article();
                 break;
             }
             case 2: {
@@ -146,7 +179,7 @@ public class MesNews {
         HashMap<Integer, News> hm = new HashMap();
 
         for (News n : base.getNews()) {
-           // if(n instanceof Photo){}
+            // if(n instanceof Photo){}
             i++;
             hm.put(i, n);
             System.out.println(i + ":" + n);

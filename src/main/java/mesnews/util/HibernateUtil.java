@@ -1,4 +1,4 @@
-package mesnews.service;
+package mesnews.util;
  
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;

@@ -7,31 +7,100 @@ package mesnews.model;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import mesnews.Lire;
 
 /**
  *
  * @author Margarita
  */
+@Entity
+@Table(name = "PHOTO")
 public class Photo extends News {
 
-    private int id;
+    @Id
+    @GeneratedValue
+    @Column(name = "photo_id")
+    private int photo_id;
+    @Column(name = "format")
     private String format;
+    @Column(name = "largeur")
     private int largeur;
+    @Column(name = "hauteur")
     private int hauteur;
+    @Column(name = "siColoree")
     private boolean siColoree;
+    @ManyToMany(mappedBy = "photos")
+    private Set<Auteur> photo_auteurs = new HashSet<Auteur>();
 
-    public Photo(int id, String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Auteur auteur, URL source) {
-        super(auteur, titre, date, source);
-        this.id = id;
+    public Photo(int id, String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Set<Auteur> auteurs, URL source) {
+        super(titre, date, source);
+        this.photo_id = id;
         this.format = format;
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.siColoree = siColoree;
+        this.photo_auteurs = auteurs;
+    }
+
+    public int getPhoto_id() {
+        return photo_id;
+    }
+
+    public void setPhoto_id(int photo_id) {
+        this.photo_id = photo_id;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public int getLargeur() {
+        return largeur;
+    }
+
+    public void setLargeur(int largeur) {
+        this.largeur = largeur;
+    }
+
+    public int getHauteur() {
+        return hauteur;
+    }
+
+    public void setHauteur(int hauteur) {
+        this.hauteur = hauteur;
+    }
+
+    public boolean isSiColoree() {
+        return siColoree;
+    }
+
+    public void setSiColoree(boolean siColoree) {
+        this.siColoree = siColoree;
+    }
+
+    public Set<Auteur> getAuteurs() {
+        return photo_auteurs;
+    }
+
+    public void setAuteurs(Set<Auteur> photo_auteurs) {
+        this.photo_auteurs = photo_auteurs;
     }
 
     public Photo() {
-        super();
+       /* super();
         System.out.println("Entrez le format");
         this.format = (Lire.S());
 
@@ -65,7 +134,7 @@ public class Photo extends News {
             default:
                 System.err.println("Erreur");
 
-        }
+        }*/
     }
 
     @Override
@@ -79,7 +148,7 @@ public class Photo extends News {
         sb.append(super.getDate());
         sb.append("\n");
         sb.append("Auteur: ");
-        sb.append(super.getAuteur());
+        sb.append(photo_auteurs);
         sb.append("\n");
         sb.append("Source: ");
         sb.append(super.getSource());

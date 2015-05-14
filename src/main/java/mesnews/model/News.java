@@ -5,7 +5,14 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import mesnews.Lire;
+import mesnews.util.LocalDatePersistenceConverter;
 
 /**
  *
@@ -18,20 +25,16 @@ import mesnews.Lire;
  * une URL qui permet de situer sur Internet la page Web d’o`u provient
  * l’information. Vous utiliserez la classe URL.
  */
+@MappedSuperclass
 public abstract class News implements Comparable<News>, Serializable {
 
-    private Auteur auteur;
+    @Column(name = "titre")
     private String titre;
+    @Convert(converter = LocalDatePersistenceConverter.class)
+    @Column(name = "date")
     private LocalDate date;
+    @Column(name = "source")
     private URL source;
-
-    public Auteur getAuteur() {
-        return auteur;
-    }
-
-    public void setAuteur(Auteur auteur) {
-        this.auteur = auteur;
-    }
 
     public String getTitre() {
         return titre;
@@ -57,15 +60,14 @@ public abstract class News implements Comparable<News>, Serializable {
         this.source = source;
     }
 
-    public News(Auteur auteur, String titre, LocalDate date, URL source) {
-        this.auteur = auteur;
+    public News(String titre, LocalDate date, URL source) {
         this.titre = titre;
         this.date = date;
         this.source = source;
     }
 
     public News() {
-        System.out.println("Entrez le titre");
+    /*    System.out.println("Entrez le titre");
         this.titre = Lire.S();
 
         //parce date
@@ -105,19 +107,20 @@ public abstract class News implements Comparable<News>, Serializable {
         sb.append(this.date);
         sb.append("\n");
         sb.append("Auteur: ");
-        sb.append(this.auteur);
+        //sb.append(this.auteurs.toString());
         sb.append("\n");
         sb.append("Source: ");
         sb.append(this.source);
         sb.append("\n");
-        return sb.toString();
+        return sb.toString();*/
     }
 
+    //default - sort by date
     @Override
     public int compareTo(News another) {
         return this.titre.compareTo(another.titre);
     }
-
+        
     public enum NewsComparator implements Comparator<News> {
 
         TITRE {
@@ -135,7 +138,7 @@ public abstract class News implements Comparable<News>, Serializable {
         AUTEUR {
                     @Override
                     public int compare(News n1, News n2) {
-                        return (n1.auteur.toString().compareTo(n2.auteur.toString()));
+                        return 0;//(n1.auteurs.toString().compareTo(n2.auteurs.toString()));
                     }
                 },
         SOURCE {

@@ -5,10 +5,18 @@
  */
 package mesnews.model;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -17,28 +25,45 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AUTEUR")
-public class Auteur {
+public class Auteur implements Serializable {
 
     @Id
     @GeneratedValue
-    private int id;
+    @Column(name = "auteur_id")
+    private int auteur_id;
     @Column(name = "nom")
     private String nom;
     @Column(name = "prenom")
     private String prenom;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinTable(name = "ARTICLE_AUTEUR",
+            joinColumns = {
+                @JoinColumn(name = "AUTEUR_ID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "ARTICLE_ID")})
+    private Set<Article> articles = new HashSet<Article>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinTable(name = "PHOTO_AUTEUR",
+            joinColumns = {
+                @JoinColumn(name = "AUTEUR_ID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "PHOTO_ID")})
+    private Set<Photo> photos = new HashSet<Photo>();
+
     public Auteur(int id, String nom, String prenom) {
-        this.id = id;
+        this.auteur_id = id;
         this.nom = nom;
         this.prenom = prenom;
     }
 
     public int getId() {
-        return id;
+        return auteur_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.auteur_id = id;
     }
 
     public String getNom() {
