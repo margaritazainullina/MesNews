@@ -34,19 +34,15 @@ public final class NewsDBService extends NewsAbstractService implements Serializ
     private NewsDBService() {
         if (news == null) {
             news = new TreeSet();
-            init();
         }
     }
-
-    public void init() {}
     
-    public void load() {
+    public static void load() {
         //load photos
         //load articles
         //merge collections and sort by date
         news.addAll(PhotoDao.listPhotos());
         news.addAll(ArticleDao.listArticles());
-
     }
 
 }

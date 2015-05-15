@@ -14,11 +14,14 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mesnews.Lire;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
@@ -40,13 +43,13 @@ public class Article extends News {
     @Id
     @GeneratedValue
     @Column(name = "article_id")
-    private int article_id;
+    private int id;
     @Column(name = "contenu")
     @Type(type = "text")
     private String contenu;
     @Column(name = "siElectronique")
     private boolean siElectronique;
-    @ManyToMany(mappedBy = "articles")
+    @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER)
     private Set<Auteur> article_auteurs = new HashSet<Auteur>();
 
     public Article(String titre, LocalDate date, Set<Auteur> auteurs, URL source, String contenu, boolean siElectronique) {
@@ -56,12 +59,12 @@ public class Article extends News {
         this.siElectronique = siElectronique;
     }
 
-    public int getArticle_id() {
-        return article_id;
+    public int getId() {
+        return id;
     }
 
-    public void setArticle_id(int article_id) {
-        this.article_id = article_id;
+    public void setId(int article_id) {
+        this.id = article_id;
     }
 
     public Set<Auteur> getArticle_auteurs() {
@@ -72,25 +75,27 @@ public class Article extends News {
         this.article_auteurs = article_auteurs;
     }
 
+    public void inserer() {
+        super.inserer();
+        System.out.println("Entrez le contenu");
+        this.contenu = (Lire.S());
+
+        System.out.println("Entrez 'y' si la nouvelle est electronique, 'n' si non");
+        switch (Lire.S()) {
+            case "y": {
+                this.siElectronique = true;
+                break;
+            }
+            case "n": {
+                this.siElectronique = false;
+                break;
+            }
+            default:
+                System.err.println("Erreur");
+        }
+    }
+
     public Article() {
-        /*super();
-         System.out.println("Entrez le contenu");
-         this.contenu = (Lire.S());
-
-         System.out.println("Entrez 'y' si la nouvelle est electronique, 'n' si non");
-         switch (Lire.S()) {
-         case "y": {
-         this.siElectronique = true;
-         break;
-         }
-         case "n": {
-         this.siElectronique = false;
-         break;
-         }
-         default:
-         System.err.println("Erreur");
-
-         }*/
     }
 
     public String getContenu() {
@@ -145,42 +150,75 @@ public class Article extends News {
         this.article_auteurs = article_auteurs;
     }
 
-   /* public void getKeyWords() {
-        List<Term> terms = new ArrayList<Term>();    //will be filled with non-matched terms
-        List<Term> hitTerms = new ArrayList<Term>(); //will be filled with matched terms
-        Query q = new MultiTermQuery("cat");
-        GetHitTerms(query, searcher, docId, hitTerms, terms);
+    /* public void getKeyWords() {
+     List<Term> terms = new ArrayList<Term>();    //will be filled with non-matched terms
+     List<Term> hitTerms = new ArrayList<Term>(); //will be filled with matched terms
+     Query q = new MultiTermQuery("cat");
+     GetHitTerms(query, searcher, docId, hitTerms, terms);
+     }
+
+     void GetHitTerms(Query query, IndexSearcher searcher, int docId, List<Term> hitTerms, List<Term> rest) throws IOException {
+     if (query instanceof TermQuery) {
+     if ((searcher.explain(query, docId)).isMatch()) {
+     rest.add(((TermQuery) query).getTerm());
+     } else {
+     rest.add(((TermQuery) query).getTerm());
+     }
+     return;
+     }
+
+     if (query instanceof BooleanQuery) {
+     BooleanClause[] clauses = ((BooleanQuery) query).getClauses();
+     if (clauses == null) {
+     return;
+     }
+
+     for (BooleanClause bc : clauses) {
+     GetHitTerms(bc.getQuery(), searcher, docId, hitTerms, rest);
+     }
+     return;
+     }
+
+     if (query instanceof MultiTermQuery) {
+     if (!(query instanceof FuzzyQuery)) //FuzzQuery doesn't support SetRewriteMethod
+     {
+     ((MultiTermQuery) query).setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_QUERY_REWRITE);
+     }
+
+     GetHitTerms(query.rewrite(searcher.getIndexReader()), searcher, docId, hitTerms, rest);
+     }
+     }*/
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                // if deriving: appendSuper(super.hashCode()).
+                append(titre).
+                append(date).
+                append(article_auteurs).
+                append(source).
+                append(contenu).
+                append(siElectronique).
+                toHashCode();
     }
 
-    void GetHitTerms(Query query, IndexSearcher searcher, int docId, List<Term> hitTerms, List<Term> rest) throws IOException {
-        if (query instanceof TermQuery) {
-            if ((searcher.explain(query, docId)).isMatch()) {
-                rest.add(((TermQuery) query).getTerm());
-            } else {
-                rest.add(((TermQuery) query).getTerm());
-            }
-            return;
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Article)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
         }
 
-        if (query instanceof BooleanQuery) {
-            BooleanClause[] clauses = ((BooleanQuery) query).getClauses();
-            if (clauses == null) {
-                return;
-            }
-
-            for (BooleanClause bc : clauses) {
-                GetHitTerms(bc.getQuery(), searcher, docId, hitTerms, rest);
-            }
-            return;
-        }
-
-        if (query instanceof MultiTermQuery) {
-            if (!(query instanceof FuzzyQuery)) //FuzzQuery doesn't support SetRewriteMethod
-            {
-                ((MultiTermQuery) query).setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_QUERY_REWRITE);
-            }
-
-            GetHitTerms(query.rewrite(searcher.getIndexReader()), searcher, docId, hitTerms, rest);
-        }
-    }*/
+        Article rhs = (Article) obj;
+        return new EqualsBuilder().
+                // if deriving: appendSuper(super.equals(obj)).
+                append(titre, rhs.titre).
+                append(date, rhs.date).
+                append(article_auteurs, rhs.article_auteurs).
+                append(source, rhs.source).
+                append(contenu, rhs.contenu).
+                append(siElectronique, rhs.siElectronique).
+                isEquals();
+    }
 }

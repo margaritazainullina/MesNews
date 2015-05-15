@@ -24,6 +24,7 @@ import mesnews.dao.ArticleDao;
 import mesnews.dao.AuteurDao;
 import mesnews.dao.PhotoDao;
 import mesnews.db.NewsAbstractService;
+import mesnews.db.NewsFileService;
 
 /**
  *
@@ -34,33 +35,7 @@ public class MesNews {
     static NewsAbstractService base;
 
     public static void main(String[] args) throws MalformedURLException {
-        // afficherMenu();
-        // Read
-        System.out.println("******* READ *******");
-        List<Auteur> auteurs = AuteurDao.listAuteurs();
-        System.out.println("Total Auteurs: " + auteurs.size());
-
-        Article a1 = new Article("Quaterly Sales meeting", LocalDate.now(), new HashSet<Auteur>(), new URL("http://111.com"), "Bla bla blaaa", true);
-        Article a2 = new Article("Something wonderful", LocalDate.now(), new HashSet<Auteur>(), new URL("http://111.com"), "Bla bla blaaaaaa~", false);
-
-        Auteur auteur1 = auteurs.get(0);
-        auteur1.setPrenom("123");
-        Auteur auteur2 = auteurs.get(1);
-
-        a1.getAuteurs().add(auteur1);
-        a1.getAuteurs().add(auteur1);
-        a2.getAuteurs().add(auteur2);
-
-        Photo p = new Photo(0, ".jpg", 600, 800, true, "Photo1", LocalDate.now(), new HashSet<Auteur>() {
-        }, new URL("http://asdf.com"));
-        p.getAuteurs().add(auteur1);
-
-        AuteurDao.saveAuteur(auteur1);
-        PhotoDao.savePhoto(p);
-        ArticleDao.saveArticle(a1);
-        ArticleDao.saveArticle(a2);
-        
-        List<Auteur> aaa = AuteurDao.listAuteurs();
+        afficherMenu();
     }
 
     public static void afficherMenu() {
@@ -70,7 +45,7 @@ public class MesNews {
             n = Lire.i();
             switch (n) {
                 case 1:
-                    creer();
+                    creer(false);
                     break;
                 case 2:
                     ouvrir();
@@ -101,42 +76,51 @@ public class MesNews {
 
     /*cree une nouvelle base dâ€™actualitee, câ€™est-`a-dire un ensemble de news dans la collection ;
      attention, cette action est `a rÂ´ealiser une seule fois au dÂ´ebut, quand la base nâ€™existe pas encore.*/
-    public static void creer() {
-        base = NewsDBService.INSTANCE;
+    public static void creer(boolean isToDb) {
+        if (isToDb) {
+            base = NewsDBService.INSTANCE;
+        } else {
+            base = NewsFileService.INSTANCE;
+        }
         System.out.println("La base de donnee est cree");
     }
 
     /*charge une base dâ€™actualitÂ´e existante qui a Â´etÂ´e enregistrÂ´ee prÂ´ealablement sur le disque
      dur de lâ€™ordinateur.*/
     public static void ouvrir() {
-       /* System.out.println("Entrez le chemin vers le fichier:");
-        String filepath = Lire.S();
-        try {
-            base.deserialize(filepath);
-            System.out.println("Success!");
-        } catch (FileNotFoundException ex) {
-            System.err.println("Le fichier est introuvable");
-        } catch (IOException ex) {
-            System.err.println("L'exception d'ouvrir");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Le class est introuvable");
-        }*/
-
+        if (base instanceof NewsDBService) {
+            NewsDBService.load();
+        } else {
+            System.out.println("Entrez le chemin vers le fichier:");
+            String filepath = Lire.S();
+            try {
+                ((NewsFileService) base).deserialize(filepath);
+                System.out.println("Success!");
+            } catch (FileNotFoundException ex) {
+                System.err.println("Le fichier est introuvable");
+            } catch (IOException ex) {
+                System.err.println("L'exception d'ouvrir");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Le class est introuvable");
+            }
+        }
     }
 
     /*Sauvegarder : sauvegarde la base courante sur le disque dur de lâ€™ordinateur.*/
     public static void sauvegarder() {
-       /* System.out.println("Entrez le chemin vers le fichier:");
+        System.out.println("Entrez le chemin vers le fichier:");
+        if (base instanceof NewsDBService) {
+            throw new IllegalStateException("Working with database not with file");
+        }
         String filepath = Lire.S();
         try {
-            base.serialize(filepath);
+            ((NewsFileService) base).serialize(filepath);
             System.out.println("Success!");
         } catch (FileNotFoundException ex) {
             System.err.println("Le fichier est introuvable");
         } catch (IOException ex) {
             System.err.println("L'exception d'ouvrir");
         }
-*/
     }
 
     /* affche le contenu total de la base.*/
@@ -157,10 +141,12 @@ public class MesNews {
         switch (Lire.i()) {
             case 1: {
                 n = new Article();
+                n.inserer();
                 break;
             }
             case 2: {
                 n = new Photo();
+                n.inserer();
                 break;
             }
             default:

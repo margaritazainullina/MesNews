@@ -12,11 +12,14 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mesnews.Lire;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  *
@@ -29,7 +32,7 @@ public class Photo extends News {
     @Id
     @GeneratedValue
     @Column(name = "photo_id")
-    private int photo_id;
+    private int id;
     @Column(name = "format")
     private String format;
     @Column(name = "largeur")
@@ -38,12 +41,12 @@ public class Photo extends News {
     private int hauteur;
     @Column(name = "siColoree")
     private boolean siColoree;
-    @ManyToMany(mappedBy = "photos")
+    @ManyToMany(mappedBy = "photos", fetch = FetchType.EAGER)
     private Set<Auteur> photo_auteurs = new HashSet<Auteur>();
 
     public Photo(int id, String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Set<Auteur> auteurs, URL source) {
         super(titre, date, source);
-        this.photo_id = id;
+        this.id = id;
         this.format = format;
         this.largeur = largeur;
         this.hauteur = hauteur;
@@ -51,12 +54,12 @@ public class Photo extends News {
         this.photo_auteurs = auteurs;
     }
 
-    public int getPhoto_id() {
-        return photo_id;
+    public int getId() {
+        return id;
     }
 
-    public void setPhoto_id(int photo_id) {
-        this.photo_id = photo_id;
+    public void setId(int photo_id) {
+        this.id = photo_id;
     }
 
     public String getFormat() {
@@ -100,7 +103,10 @@ public class Photo extends News {
     }
 
     public Photo() {
-       /* super();
+    }
+
+    public void inserer() {
+        super.inserer();
         System.out.println("Entrez le format");
         this.format = (Lire.S());
 
@@ -133,8 +139,7 @@ public class Photo extends News {
             }
             default:
                 System.err.println("Erreur");
-
-        }*/
+        }
     }
 
     @Override
@@ -168,4 +173,41 @@ public class Photo extends News {
         return sb.toString();
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                // if deriving: appendSuper(super.hashCode()).
+                append(titre).
+                append(date).
+                append(photo_auteurs).
+                append(source).
+                append(format).
+                append(largeur).
+                append(hauteur).
+                append(siColoree).
+                toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Photo)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+
+        Photo rhs = (Photo) obj;
+        return new EqualsBuilder().
+                // if deriving: appendSuper(super.equals(obj)).
+                append(titre, rhs.titre).
+                append(date, rhs.date).
+                append(photo_auteurs, rhs.photo_auteurs).
+                append(source, rhs.source).
+                append(format, rhs.format).
+                append(largeur, rhs.largeur).
+                append(hauteur, rhs.hauteur).
+                append(siColoree, rhs.siColoree).
+                isEquals();
+    }
 }

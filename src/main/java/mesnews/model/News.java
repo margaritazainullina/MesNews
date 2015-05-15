@@ -29,12 +29,12 @@ import mesnews.util.LocalDatePersistenceConverter;
 public abstract class News implements Comparable<News>, Serializable {
 
     @Column(name = "titre")
-    private String titre;
+    protected String titre;
     @Convert(converter = LocalDatePersistenceConverter.class)
     @Column(name = "date")
-    private LocalDate date;
+    protected LocalDate date;
     @Column(name = "source")
-    private URL source;
+    protected URL source;
 
     public String getTitre() {
         return titre;
@@ -67,7 +67,10 @@ public abstract class News implements Comparable<News>, Serializable {
     }
 
     public News() {
-    /*    System.out.println("Entrez le titre");
+    }
+
+    public void inserer() {
+        System.out.println("Entrez le titre");
         this.titre = Lire.S();
 
         //parce date
@@ -82,7 +85,7 @@ public abstract class News implements Comparable<News>, Serializable {
         } while (this.date == null);
 
         System.out.println("Entrez l'auteur");
-        //TODO
+         //TODO
         //this.auteur = Lire.S();
 
         //parce url
@@ -112,7 +115,7 @@ public abstract class News implements Comparable<News>, Serializable {
         sb.append("Source: ");
         sb.append(this.source);
         sb.append("\n");
-        return sb.toString();*/
+        return sb.toString();
     }
 
     //default - sort by date
@@ -120,7 +123,7 @@ public abstract class News implements Comparable<News>, Serializable {
     public int compareTo(News another) {
         return this.titre.compareTo(another.titre);
     }
-        
+
     public enum NewsComparator implements Comparator<News> {
 
         TITRE {

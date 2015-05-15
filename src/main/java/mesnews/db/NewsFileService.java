@@ -38,7 +38,7 @@ public class NewsFileService extends NewsAbstractService implements Serializable
         FileOutputStream fos;
         fos = new FileOutputStream(filepath);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(this);
+        oos.writeObject(news);
         oos.flush();
         oos.close();
     }
@@ -49,8 +49,8 @@ public class NewsFileService extends NewsAbstractService implements Serializable
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object obj = ois.readObject();
         ois.close();
-        NewsFileService loaded = (NewsFileService) obj;
-        this.news = loaded.news;
+        
+        this.news = (TreeSet<News>)obj;
     }
 
 }

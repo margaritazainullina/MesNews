@@ -18,7 +18,7 @@ public class PhotoDao {
         return photos;
     }
 
-    public static Photo readPhoto(Long id) {
+    public static Photo readPhoto(int id) {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
 
@@ -34,7 +34,7 @@ public class PhotoDao {
         session.beginTransaction();
 
         Integer id = (Integer) session.save(photo);
-        photo.setPhoto_id(id);
+        photo.setId(id);
         session.getTransaction().commit();
         session.close();
         return photo;

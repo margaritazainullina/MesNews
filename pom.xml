@@ -92,18 +92,11 @@
    
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
         </dependency>
         
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>5.1.0</version>
-            <type>jar</type>
-        </dependency>
-
         <!--Database persistence-->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -126,6 +119,28 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.0.5</version>
+        </dependency>
+        
+        <!--Testing-->
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        
+        <!--Data mining-->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>5.1.0</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
 </project>

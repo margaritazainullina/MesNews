@@ -18,7 +18,7 @@ public class AuteurDao {
         return auteurs;
     }
 
-    public static Auteur readAuteur(Long id) {
+    public static Auteur readAuteur(int id) {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
         Auteur auteur = (Auteur) session.get(Auteur.class, id);

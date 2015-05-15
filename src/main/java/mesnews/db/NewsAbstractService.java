@@ -16,7 +16,7 @@ import mesnews.model.News;
  */
 public abstract class NewsAbstractService {
 
-    protected TreeSet<News> news;
+    protected static TreeSet<News> news;
 
     //getteurs and setteurs pour collection
     public TreeSet<News> getNews() {

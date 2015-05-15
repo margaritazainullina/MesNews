@@ -18,7 +18,7 @@ public class ArticleDao {
         return articles;
     }
 
-    public static Article readArticle(Long id) {
+    public static Article readArticle(int id) {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
         Article auteur = (Article) session.get(Article.class, id);
@@ -31,7 +31,7 @@ public class ArticleDao {
         Session session = sf.openSession();
         session.beginTransaction();
         Integer id = (Integer) session.save(article);
-        article.setArticle_id(id);
+        article.setId(id);
         session.getTransaction().commit();
         session.close();
         return article;

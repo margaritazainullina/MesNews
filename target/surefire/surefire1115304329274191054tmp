@@ -1,0 +1,8 @@
+#surefire
+#Fri May 15 02:08:16 EEST 2015
+maven.ext.class.path=C\:\\Users\\Margarita\\AppData\\Roaming\\NetBeans\\8.0.1\\maven-nblib\\netbeans-eventspy.jar
+user.dir=C\:\\Users\\Margarita\\Documents\\NetBeansProjects\\mavenproject1
+file.encoding=UTF-8
+localRepository=C\:\\Users\\Margarita\\.m2\\repository
+basedir=C\:\\Users\\Margarita\\Documents\\NetBeansProjects\\mavenproject1
+test=mesnews.AuteurDaoTest
