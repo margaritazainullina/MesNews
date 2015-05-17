@@ -1,18 +1,36 @@
 package mesnews.model;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import mesnews.Lire;
+import static mesnews.db.NewsAbstractService.idx;
 import mesnews.util.LocalDatePersistenceConverter;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.RAMDirectory;
 
 /**
  *
@@ -35,6 +53,8 @@ public abstract class News implements Comparable<News>, Serializable {
     protected LocalDate date;
     @Column(name = "source")
     protected URL source;
+    @Transient
+    Set<String> keyWords= new HashSet<>();
 
     public String getTitre() {
         return titre;
@@ -58,6 +78,14 @@ public abstract class News implements Comparable<News>, Serializable {
 
     public void setSource(URL source) {
         this.source = source;
+    }
+
+    public Set<String> getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(Set<String> keyWords) {
+        this.keyWords = keyWords;
     }
 
     public News(String titre, LocalDate date, URL source) {
@@ -110,7 +138,9 @@ public abstract class News implements Comparable<News>, Serializable {
         sb.append(this.date);
         sb.append("\n");
         sb.append("Auteur: ");
-        //sb.append(this.auteurs.toString());
+        sb.append("\n");
+        sb.append("Keywords: ");
+        sb.append(this.keyWords);
         sb.append("\n");
         sb.append("Source: ");
         sb.append(this.source);
@@ -158,4 +188,12 @@ public abstract class News implements Comparable<News>, Serializable {
                     }
                 };
     }
+
+    /**
+     * Make a Document object with an un-indexed title field and an indexed
+     * content field.
+     *
+     * @return
+     */
+    public abstract Document createDocument();
 }

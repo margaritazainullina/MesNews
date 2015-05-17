@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,16 +22,34 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mesnews.Lire;
+import static mesnews.db.NewsAbstractService.idx;
+import static mesnews.db.NewsAbstractService.newsIndex;
+import static mesnews.db.NewsAbstractService.searcher;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.BaseCompositeReader;
+import org.apache.lucene.index.ExitableDirectoryReader;
+import org.apache.lucene.index.FilterIndexReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
+import org.apache.lucene.index.TermFreqVector;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MultiTermQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.store.RAMDirectory;
 import org.hibernate.annotations.Type;
 
 /**
@@ -149,45 +169,6 @@ public class Article extends News {
     public void setAuteurs(Set<Auteur> article_auteurs) {
         this.article_auteurs = article_auteurs;
     }
-
-    /* public void getKeyWords() {
-     List<Term> terms = new ArrayList<Term>();    //will be filled with non-matched terms
-     List<Term> hitTerms = new ArrayList<Term>(); //will be filled with matched terms
-     Query q = new MultiTermQuery("cat");
-     GetHitTerms(query, searcher, docId, hitTerms, terms);
-     }
-
-     void GetHitTerms(Query query, IndexSearcher searcher, int docId, List<Term> hitTerms, List<Term> rest) throws IOException {
-     if (query instanceof TermQuery) {
-     if ((searcher.explain(query, docId)).isMatch()) {
-     rest.add(((TermQuery) query).getTerm());
-     } else {
-     rest.add(((TermQuery) query).getTerm());
-     }
-     return;
-     }
-
-     if (query instanceof BooleanQuery) {
-     BooleanClause[] clauses = ((BooleanQuery) query).getClauses();
-     if (clauses == null) {
-     return;
-     }
-
-     for (BooleanClause bc : clauses) {
-     GetHitTerms(bc.getQuery(), searcher, docId, hitTerms, rest);
-     }
-     return;
-     }
-
-     if (query instanceof MultiTermQuery) {
-     if (!(query instanceof FuzzyQuery)) //FuzzQuery doesn't support SetRewriteMethod
-     {
-     ((MultiTermQuery) query).setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_QUERY_REWRITE);
-     }
-
-     GetHitTerms(query.rewrite(searcher.getIndexReader()), searcher, docId, hitTerms, rest);
-     }
-     }*/
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
@@ -221,4 +202,22 @@ public class Article extends News {
                 append(siElectronique, rhs.siElectronique).
                 isEquals();
     }
+
+    @Override
+    public Document createDocument() {
+        Document doc = new Document();
+
+        // Add source as an unindexed field...
+        doc.add(Field.UnIndexed("source", this.source.toString()));
+        doc.add(Field.Text("title", this.titre));
+
+        // ...and the content as an indexed field. Note that indexed
+        // Text fields are constructed using a Reader. Lucene can read
+        // and index very large chunks of text, without storing the
+        // entire content verbatim in the index. In this example we
+        // can just wrap the content string in a StringReader.
+        doc.add(Field.Text("content", this.contenu, true));
+        return doc;
+    }
+
 }

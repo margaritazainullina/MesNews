@@ -5,10 +5,45 @@
  */
 package mesnews.db;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mesnews.model.News;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.Fields;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
+import org.apache.lucene.index.TermFreqVector;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.RAMDirectory;
 
 /**
  *
@@ -16,7 +51,10 @@ import mesnews.model.News;
  */
 public abstract class NewsAbstractService {
 
-    protected static TreeSet<News> news;
+    public static TreeSet<News> news;
+    public static IndexWriter newsIndex;
+    public static Searcher searcher;
+    public static RAMDirectory idx;
 
     //getteurs and setteurs pour collection
     public TreeSet<News> getNews() {
@@ -38,22 +76,9 @@ public abstract class NewsAbstractService {
         } else {
             System.out.println("Un total de " + news.size() + " entr�es");
         }
-        for (News n : news) {
+        news.stream().forEach((n) -> {
             System.out.println(n);
-        }
-    }
-
-    public TreeSet<News> rechercher(String nom) {
-        TreeSet<News> results = new TreeSet<>();
-        String[] cles = nom.split("\\W+");
-        for (News n : news) {
-            for (String cle : cles) {
-                if (n.getTitre().contains(cle)) {
-                    results.add(n);
-                }
-            }
-        }
-        return results;
+        });
     }
 
     public Set<News> getNewsSortedByTitre() {
@@ -84,5 +109,138 @@ public abstract class NewsAbstractService {
         Set newSet = new TreeSet(News.NewsComparator.KEYWORDS);
         newSet.addAll(news);
         return newSet;
+    }
+
+    public void indexNews() throws IOException {
+        idx = new RAMDirectory();
+
+        //create overall index
+        for (News n : news) {
+            newsIndex = new IndexWriter(idx, new StandardAnalyzer(), true);
+            newsIndex.addDocument(n.createDocument()); // Optimize and close the writer to finish building the index
+            newsIndex.optimize();
+            newsIndex.close();
+        }
+
+        for (News n : news) {
+            RAMDirectory documentIdx = new RAMDirectory();
+            //create index for each document
+            IndexWriter documentIndexWriter = new IndexWriter(documentIdx, new StandardAnalyzer(), true);
+            documentIndexWriter.addDocument(n.createDocument()); // Optimize and close the writer to finish building the index
+            documentIndexWriter.optimize();
+            documentIndexWriter.close();
+            //set keywords for document
+            IndexReader reader = IndexReader.open(documentIdx);
+            TermFreqVector tfv;
+
+            if (reader.getTermFreqVector(0, "content") != null) {
+                tfv = reader.getTermFreqVector(0, "content");
+            } else {
+                //if photo
+                tfv = reader.getTermFreqVector(0, "titre");
+            }
+
+            //create hashmap with terms and frequencies
+            HashMap<String, Integer> frequencies = new HashMap<>();
+            for (int j = 0; j < tfv.getTerms().length; j++) {
+                frequencies.put(tfv.getTerms()[j], tfv.getTermFrequencies()[j]);
+            }
+
+            //sort by frequency
+            List<Map.Entry<String, Integer>> list
+                    = new LinkedList<>(frequencies.entrySet());
+            Collections.sort(list, (Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) -> o2.getValue().compareTo(o1.getValue()));
+
+            //set 10 or less keywords
+            for (Iterator<Map.Entry<String, Integer>> iterator = list.iterator(); iterator.hasNext();) {
+                String keyword = iterator.next().getKey();
+                if (!(keyword.matches("[0-9]+") && keyword.length() > 2)) {
+                    n.getKeyWords().add(keyword);
+                }
+                if (n.getKeyWords().size() >= 10) {
+                    break;
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Searches for the given string in the "content" field
+     *
+     * @param queryString
+     * @return
+     * @throws org.apache.lucene.queryParser.ParseException
+     * @throws java.io.IOException
+     */
+    public TreeSet<News> rechercher(String queryString)
+            throws ParseException, IOException {
+        // indexNews();
+        TreeSet<News> result = new TreeSet<>();
+        // Build a Query object
+        Query query = QueryParser.parse(
+                queryString, "titre", new StandardAnalyzer());
+
+        // Search for the query
+        Hits hits = searcher.search(query);
+
+        // Examine the Hits object to see if there were any matches
+        int hitCount = hits.length();
+        if (hitCount == 0) {
+            System.out.println(
+                    "No matches were found for \"" + queryString + "\"");
+        } else {
+            System.out.println("Hits for \""
+                    + queryString + "\" were found in quotes by:");
+
+            // Iterate over the Documents in the Hits object
+            for (int i = 0; i < hitCount; i++) {
+                Document doc = hits.doc(i);
+                String title = doc.get("title");
+                result.add(getNewsByTitle(title));
+            }
+        }
+        System.out.println();
+        return result;
+    }
+
+    private News getNewsByTitle(String title) {
+        Iterator<News> it = news.iterator();
+
+        while (it.hasNext()) {
+            News current = it.next();
+            if (current.getTitre().equals(title)) {
+                return current;
+            }
+        }
+        return null;
+    }
+
+    public Set<News> search(String queryString) throws IOException, ParseException {
+        Set<News> result = new HashSet<News>();
+
+        // Build an IndexSearcher using the in-memory index
+        searcher = new IndexSearcher(NewsDBService.idx);
+
+        // Build a Query object
+        Query query = QueryParser.parse(
+                queryString, "content", new StandardAnalyzer());
+
+        // Search for the query
+        Hits hits = searcher.search(query);
+
+        // Examine the Hits object to see if there were any matches
+        int hitCount = hits.length();
+
+        System.out.println("Hits for \""
+                + queryString + "\" were found in quotes by:");
+
+        // Iterate over the Documents in the Hits object
+        for (int i = 0; i < hitCount; i++) {
+            Document doc = hits.doc(i);
+            result.add(getNewsByTitle(doc.get("title")));
+            searcher.close();
+        }
+        return result;
     }
 }

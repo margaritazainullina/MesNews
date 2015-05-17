@@ -5,9 +5,12 @@
  */
 package mesnews.model;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -18,8 +21,23 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mesnews.Lire;
+import static mesnews.db.NewsAbstractService.searcher;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.RAMDirectory;
 
 /**
  *
@@ -210,4 +228,22 @@ public class Photo extends News {
                 append(siColoree, rhs.siColoree).
                 isEquals();
     }
+
+    @Override
+    public Document createDocument() {
+        Document doc = new Document();
+
+        // Add source as an unindexed field...
+        doc.add(Field.UnIndexed("id", this.id + ""));
+        doc.add(Field.UnIndexed("source", this.source.toString()));
+
+        // ...and the content as an indexed field. Note that indexed
+        // Text fields are constructed using a Reader. Lucene can read
+        // and index very large chunks of text, without storing the
+        // entire content verbatim in the index. In this example we
+        // can just wrap the content string in a StringReader.
+        doc.add(Field.Text("titre", this.titre, true));
+
+        return doc;
+    }  
 }

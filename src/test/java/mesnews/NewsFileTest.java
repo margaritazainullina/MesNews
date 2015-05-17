@@ -14,7 +14,14 @@ import java.net.URL;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeSet;
+import mesnews.db.NewsFileService;
+import mesnews.model.Article;
+import mesnews.model.Auteur;
+import mesnews.model.News;
+import mesnews.model.Photo;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,12 +34,12 @@ import static org.junit.Assert.*;
  * @author Margarita
  */
 public class NewsFileTest {
-/*
-    BaseDeNews news;
+
+    NewsFileService news;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
-    public BaseDeNewsTest() {
+    public NewsFileTest() {
     }
 
     @BeforeClass
@@ -45,7 +52,7 @@ public class NewsFileTest {
 
     @Before
     public void setUp() {
-        news = BaseDeNews.INSTANCE;
+        news = NewsFileService.INSTANCE;
     }
 
     @After
@@ -67,7 +74,7 @@ public class NewsFileTest {
     @Test
     public void creerTest() {
         news = null;
-        news = BaseDeNews.INSTANCE;
+        news = NewsFileService.INSTANCE;
         assertNotNull(news);
     }
 
@@ -81,22 +88,28 @@ public class NewsFileTest {
     public void ajouterTest() throws MalformedURLException {
         LocalDate l = LocalDate.of(2014, Month.JANUARY, 1);
         URL url = new URL("http://news.com/article1");
-        news.ajoute(new Photo("Breaking news!", l, "Margarita", url, ".jpg", 600, 800, true));
-        assertEquals(news.getNews().size(), 1);
+        //String titre, LocalDate date, Set<Auteur> auteurs, URL source, String contenu, boolean siElectronique) {
+        Set<Auteur> auteurs = new HashSet<>();
+        auteurs.add(new Auteur(0, "Spasskaya", "Rita"));
+
+        news.ajoute(new Article("Breaking news!", l, auteurs, url, "contenu", true));
+        news.ajoute(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, auteurs, url));
+
+        assertEquals(news.getNews().size(), 2);
     }
 
     @Test(expected = DateTimeException.class)
     public void ajouterExceptionDateTest() throws MalformedURLException {
         LocalDate l = LocalDate.of(0, Month.JANUARY, -1);
         URL url = new URL("http://news.com/article1");
-        news.ajoute(new Photo("Breaking news!", l, "Margarita", url, ".jpg", 600, 800, true));
+        news.ajoute(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url));
     }
 
     @Test(expected = MalformedURLException.class)
     public void ajouterExceptionUrlTest() throws MalformedURLException {
         URL url = new URL("\n");
         LocalDate l = LocalDate.of(2014, Month.JANUARY, 1);
-        news.ajoute(new Photo("Breaking news!", l, "Margarita", url, ".jpg", 600, 800, true));
+        news.ajoute(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url));
     }
 
     @Test
@@ -114,6 +127,6 @@ public class NewsFileTest {
         news.setNews(new TreeSet<News>());
         news.afficher();
         assertEquals("La base est vide!", outContent.toString().trim());
-    }*/
+    }
 
 }

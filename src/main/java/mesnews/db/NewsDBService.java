@@ -5,21 +5,10 @@
  */
 package mesnews.db;
 
-import mesnews.model.News;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeSet;
 import mesnews.dao.ArticleDao;
 import mesnews.dao.PhotoDao;
-import mesnews.model.Article;
-import mesnews.model.Photo;
 
 /**
  *
@@ -36,13 +25,12 @@ public final class NewsDBService extends NewsAbstractService implements Serializ
             news = new TreeSet();
         }
     }
-    
+
     public static void load() {
         //load photos
         //load articles
         //merge collections and sort by date
         news.addAll(PhotoDao.listPhotos());
         news.addAll(ArticleDao.listArticles());
-    }
-
+    }  
 }

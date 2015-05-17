@@ -12,19 +12,19 @@ import mesnews.model.Photo;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import mesnews.model.Auteur;
-import mesnews.dao.ArticleDao;
-import mesnews.dao.AuteurDao;
-import mesnews.dao.PhotoDao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mesnews.db.NewsAbstractService;
 import mesnews.db.NewsFileService;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Searcher;
 
 /**
  *
@@ -45,7 +45,7 @@ public class MesNews {
             n = Lire.i();
             switch (n) {
                 case 1:
-                    creer(false);
+                    creer(true);
                     break;
                 case 2:
                     ouvrir();
@@ -104,6 +104,11 @@ public class MesNews {
                 System.out.println("Le class est introuvable");
             }
         }
+        try {
+            base.indexNews();
+        } catch (IOException ex) {
+            Logger.getLogger(MesNews.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /*Sauvegarder : sauvegarde la base courante sur le disque dur de lâ€™ordinateur.*/
@@ -125,8 +130,6 @@ public class MesNews {
 
     /* affche le contenu total de la base.*/
     public static void afficher() {
-        /*Toujours dans la classe principale, testez votre programme en faisant a!cher le contenu de lâ€™actualitÂ´e
-         n `a lâ€™aide de la mÂ´ethode afficher().*/
         try {
             base.afficher();
         } catch (Exception ex) {
@@ -188,8 +191,13 @@ public class MesNews {
     /* permet de recherche si une actualitÂ´e existe en fonction du titre, ou mË†eme de
      mots-clefs, entrÂ´es par lâ€™utilisateur.*/
     public static void rechercher() {
-        String requete = Lire.S();
-        base.rechercher(requete);
+        String queryString = Lire.S();
+        try {
+            System.out.println(base.search(queryString));
+        } catch (IOException ex) {
+        } catch (ParseException ex) {
+            Logger.getLogger(MesNews.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void quitter() {
