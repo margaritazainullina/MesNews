@@ -14,6 +14,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.TreeSet;
+import mesnews.dao.ArticleDao;
+import mesnews.dao.PhotoDao;
+import mesnews.model.Article;
+import mesnews.model.Photo;
 
 /**
  *
@@ -47,8 +51,9 @@ public class NewsFileService extends NewsAbstractService implements Serializable
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object obj = ois.readObject();
         ois.close();
-        
-        this.news = (TreeSet<News>)obj;
+
+        this.news = (TreeSet<News>) obj;
     }
 
+   
 }

@@ -92,8 +92,8 @@ public class NewsFileTest {
         Set<Auteur> auteurs = new HashSet<>();
         auteurs.add(new Auteur(0, "Spasskaya", "Rita"));
 
-        news.ajoute(new Article("Breaking news!", l, auteurs, url, "contenu", true));
-        news.ajoute(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, auteurs, url));
+        news.ajouter(new Article("Breaking news!", l, auteurs, url, "contenu", true));
+        news.ajouter(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, auteurs, url, null));
 
         assertEquals(news.getNews().size(), 2);
     }
@@ -102,14 +102,14 @@ public class NewsFileTest {
     public void ajouterExceptionDateTest() throws MalformedURLException {
         LocalDate l = LocalDate.of(0, Month.JANUARY, -1);
         URL url = new URL("http://news.com/article1");
-        news.ajoute(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url));
+        news.ajouter(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url, null));
     }
 
     @Test(expected = MalformedURLException.class)
     public void ajouterExceptionUrlTest() throws MalformedURLException {
         URL url = new URL("\n");
         LocalDate l = LocalDate.of(2014, Month.JANUARY, 1);
-        news.ajoute(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url));
+        news.ajouter(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url, null));
     }
 
     @Test

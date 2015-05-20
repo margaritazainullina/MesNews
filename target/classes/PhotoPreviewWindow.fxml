@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="646.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PhotoPreviewWindowController">
+   <children>
+      <Label id="titleLabel" fx:id="titleLabel" alignment="TOP_CENTER" layoutX="19.0" layoutY="35.0" prefHeight="51.0" prefWidth="572.0">
+         <font>
+            <Font size="23.0" />
+         </font></Label>
+      <Label fx:id="authorLabel" layoutX="42.0" layoutY="565.0" text="Label">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font></Label>
+      <Label fx:id="dateLabel" layoutX="488.0" layoutY="565.0" text="Label">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font></Label>
+      <ImageView fx:id="photoImage" fitHeight="402.0" fitWidth="540.0" layoutX="154.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="149.5">
+         <image>
+            <Image url="@../../../../../../Desktop/1431701070_254488982.jpg" />
+         </image></ImageView>
+      <Button layoutX="267.0" layoutY="601.0" mnemonicParsing="false" onAction="#publishButtonAction" text="Publier">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Label fx:id="infoLabel" layoutX="42.0" layoutY="505.0" text="Label" />
+      <Label fx:id="keywordsLabel" layoutX="42.0" layoutY="69.0" text="Label" />
+   </children>
+</AnchorPane>

@@ -9,6 +9,10 @@ import java.io.Serializable;
 import java.util.TreeSet;
 import mesnews.dao.ArticleDao;
 import mesnews.dao.PhotoDao;
+import static mesnews.db.NewsAbstractService.news;
+import mesnews.model.Article;
+import mesnews.model.News;
+import mesnews.model.Photo;
 
 /**
  *
@@ -32,5 +36,15 @@ public final class NewsDBService extends NewsAbstractService implements Serializ
         //merge collections and sort by date
         news.addAll(PhotoDao.listPhotos());
         news.addAll(ArticleDao.listArticles());
-    }  
+    }
+
+    @Override
+    public void ajouter(News n) {
+        news.add(n);
+        if (n instanceof Article) {
+            ArticleDao.saveArticle((Article) n);
+        } else if (n instanceof Photo) {
+            PhotoDao.savePhoto((Photo) n);
+        }
+    }
 }

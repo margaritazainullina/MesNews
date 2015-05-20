@@ -1,36 +1,19 @@
 package mesnews.model;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import mesnews.Lire;
-import static mesnews.db.NewsAbstractService.idx;
 import mesnews.util.LocalDatePersistenceConverter;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.store.RAMDirectory;
 
 /**
  *
@@ -54,7 +37,7 @@ public abstract class News implements Comparable<News>, Serializable {
     @Column(name = "source")
     protected URL source;
     @Transient
-    Set<String> keyWords= new HashSet<>();
+    Set<String> keyWords = new HashSet<>();
 
     public String getTitre() {
         return titre;
@@ -83,6 +66,19 @@ public abstract class News implements Comparable<News>, Serializable {
     public Set<String> getKeyWords() {
         return keyWords;
     }
+
+    public String getKeyWordsString() {
+        if (keyWords.size() == 0) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        for (String kw : keyWords) {
+            sb.append(kw + " ,");
+        }
+        return sb.toString().substring(0, sb.length() - 2);
+    }
+
+    public abstract String getAutorsString();
 
     public void setKeyWords(Set<String> keyWords) {
         this.keyWords = keyWords;
@@ -196,4 +192,10 @@ public abstract class News implements Comparable<News>, Serializable {
      * @return
      */
     public abstract Document createDocument();
+
+    public abstract Set<Auteur> getAuteurs();
+
+    public abstract void setAuteurs(Set<Auteur> photo_auteurs);
+
+    public abstract void addAuteur(Auteur photo_auteurs);
 }

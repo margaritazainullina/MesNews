@@ -157,7 +157,7 @@ public class MesNews {
 
         }
 
-        base.ajoute(n);
+        base.ajouter(n);
         System.out.println("La nouvelle est ajoutee");
     }
 

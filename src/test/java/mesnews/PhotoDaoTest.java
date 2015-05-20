@@ -3,7 +3,6 @@ package mesnews;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import mesnews.dao.AuteurDao;
@@ -29,7 +28,7 @@ public class PhotoDaoTest {
     @BeforeClass
     public static void setUp() throws MalformedURLException {
         //create test entry
-        testPhoto = new Photo(0, ".jpg", 600, 800, true, "Some photo", LocalDate.now(), new HashSet<Auteur>(), new URL("http://123.com"));
+        testPhoto = new Photo(0, ".jpg", 600, 800, true, "Some photo", LocalDate.now(), new HashSet<Auteur>(), new URL("http://123.com"), null);
         //read all entrues to collection
         photos = PhotoDao.listPhotos();
     }

@@ -1,18 +1,18 @@
 -------------------------------------------------------------------------------
 Test set: mesnews.ArticleDaoTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.846 sec <<< FAILURE!
-CRUDArticleTest(mesnews.ArticleDaoTest)  Time elapsed: 1.117 sec  <<< FAILURE!
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.876 sec <<< FAILURE!
+CRUDArticleTest(mesnews.ArticleDaoTest)  Time elapsed: 0.283 sec  <<< FAILURE!
 java.lang.AssertionError: expected:<Information:
 Titre: Article 1
-Date: 2015-05-17
+Date: 2015-05-20
 Auteur: [wiki null]
 Source: http://123.com/1
 Contenu:another content
 Info:noir blanc
 > but was:<Information:
 Titre: Article 1
-Date: 2015-05-17
+Date: 2015-05-20
 Auteur: []
 Source: http://123.com/1
 Contenu:another content

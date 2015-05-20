@@ -57,4 +57,8 @@ public class AuteurDao {
         session.close();
     }
 
+    public static void add(Auteur newAuthor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

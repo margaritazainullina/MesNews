@@ -5,15 +5,17 @@
  */
 package mesnews.model;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,23 +23,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mesnews.Lire;
-import static mesnews.db.NewsAbstractService.searcher;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.TermEnum;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.store.RAMDirectory;
 
 /**
  *
@@ -61,8 +51,10 @@ public class Photo extends News {
     private boolean siColoree;
     @ManyToMany(mappedBy = "photos", fetch = FetchType.EAGER)
     private Set<Auteur> photo_auteurs = new HashSet<Auteur>();
+    @Column(name = "image")
+    public byte[] image;
 
-    public Photo(int id, String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Set<Auteur> auteurs, URL source) {
+    public Photo(int id, String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Set<Auteur> auteurs, URL source, byte[] image) {
         super(titre, date, source);
         this.id = id;
         this.format = format;
@@ -70,6 +62,7 @@ public class Photo extends News {
         this.hauteur = hauteur;
         this.siColoree = siColoree;
         this.photo_auteurs = auteurs;
+        this.image = image;
     }
 
     public int getId() {
@@ -120,7 +113,49 @@ public class Photo extends News {
         this.photo_auteurs = photo_auteurs;
     }
 
+    public String getAutorsString() {
+        StringBuffer sb = new StringBuffer();
+        if (photo_auteurs.size() == 0) {
+            return "";
+        }
+        for (Auteur a : photo_auteurs) {
+            sb.append(a + " ,");
+        }
+        return sb.toString().substring(0, sb.length() - 2);
+    }
+
+    public File getImage() throws IOException {
+        File f = new File("image"+".jpg");
+        FileUtils.writeByteArrayToFile(f, Base64.getDecoder().decode(image));
+        return f;
+    }
+
+    public byte[] getFileImage() {
+        return this.image;
+    }
+
+    public void setImage(File img) throws IOException {
+        this.image = Base64.getEncoder().encode(FileUtils.readFileToByteArray(img));
+    }
+
     public Photo() {
+    }
+
+    public File loadPhotoFromURL(URL url) throws IOException {
+        File f = new File("image");
+        InputStream inputStream = url.openStream();
+        OutputStream outputStream = new FileOutputStream(f);
+        byte[] buffer = new byte[2048];
+
+        int length = 0;
+
+        while ((length = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, length);
+        }
+
+        inputStream.close();
+        outputStream.close();
+        return f;
     }
 
     public void inserer() {
@@ -158,6 +193,23 @@ public class Photo extends News {
             default:
                 System.err.println("Erreur");
         }
+    }
+
+    public String info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(source);
+        sb.append("\n");
+        sb.append(format);
+        sb.append(", ");
+        sb.append(largeur);
+        sb.append("*");
+        sb.append(hauteur);
+        if (siColoree) {
+            sb.append(", coloree\n");
+        } else {
+            sb.append(", noir blanc\n");
+        }
+        return sb.toString();
     }
 
     @Override
@@ -245,5 +297,9 @@ public class Photo extends News {
         doc.add(Field.Text("titre", this.titre, true));
 
         return doc;
-    }  
+    }
+
+    public void addAuteur(Auteur photo_auteur) {
+        this.photo_auteurs.add(photo_auteur);
+    }
 }

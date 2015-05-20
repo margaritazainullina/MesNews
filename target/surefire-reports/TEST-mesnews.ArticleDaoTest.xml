@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="1" name="mesnews.ArticleDaoTest" time="2.848" errors="0" skipped="0">
+<testsuite tests="1" failures="1" name="mesnews.ArticleDaoTest" time="1.9" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_25\jre\bin"/>
@@ -61,31 +61,31 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="mesnews.ArticleDaoTest" name="CRUDArticleTest" time="1.118">
+  <testcase classname="mesnews.ArticleDaoTest" name="CRUDArticleTest" time="0.283">
     <failure message="expected:&lt;Information:
 Titre: Article 1
-Date: 2015-05-17
+Date: 2015-05-20
 Auteur: [wiki null]
 Source: http://123.com/1
 Contenu:another content
 Info:noir blanc
 &gt; but was:&lt;Information:
 Titre: Article 1
-Date: 2015-05-17
+Date: 2015-05-20
 Auteur: []
 Source: http://123.com/1
 Contenu:another content
 Info:noir blanc
 &gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;Information:
 Titre: Article 1
-Date: 2015-05-17
+Date: 2015-05-20
 Auteur: [wiki null]
 Source: http://123.com/1
 Contenu:another content
 Info:noir blanc
 &gt; but was:&lt;Information:
 Titre: Article 1
-Date: 2015-05-17
+Date: 2015-05-20
 Auteur: []
 Source: http://123.com/1
 Contenu:another content
@@ -127,87 +127,87 @@ Info:noir blanc
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
 </failure>
-    <system-err>5 17, 2015 9:27:39 ?? org.hibernate.annotations.common.reflection.java.JavaReflectionManager &lt;clinit&gt;
+    <system-err>5 20, 2015 9:05:49 ?? org.hibernate.annotations.common.reflection.java.JavaReflectionManager &lt;clinit&gt;
 INFO: HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
-5 17, 2015 9:27:39 ?? org.hibernate.Version logVersion
+5 20, 2015 9:05:49 ?? org.hibernate.Version logVersion
 INFO: HHH000412: Hibernate Core {4.3.9.Final}
-5 17, 2015 9:27:39 ?? org.hibernate.cfg.Environment &lt;clinit&gt;
+5 20, 2015 9:05:49 ?? org.hibernate.cfg.Environment &lt;clinit&gt;
 INFO: HHH000206: hibernate.properties not found
-5 17, 2015 9:27:39 ?? org.hibernate.cfg.Environment buildBytecodeProvider
+5 20, 2015 9:05:49 ?? org.hibernate.cfg.Environment buildBytecodeProvider
 INFO: HHH000021: Bytecode provider name : javassist
-5 17, 2015 9:27:39 ?? org.hibernate.cfg.Configuration configure
+5 20, 2015 9:05:49 ?? org.hibernate.cfg.Configuration configure
 INFO: HHH000043: Configuring from resource: /hibernate.cfg.xml
-5 17, 2015 9:27:39 ?? org.hibernate.cfg.Configuration getConfigurationInputStream
+5 20, 2015 9:05:49 ?? org.hibernate.cfg.Configuration getConfigurationInputStream
 INFO: HHH000040: Configuration resource: /hibernate.cfg.xml
-5 17, 2015 9:27:39 ?? org.hibernate.internal.util.xml.DTDEntityResolver resolveEntity
+5 20, 2015 9:05:49 ?? org.hibernate.internal.util.xml.DTDEntityResolver resolveEntity
 WARN: HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
-5 17, 2015 9:27:39 ?? org.hibernate.cfg.Configuration doConfigure
+5 20, 2015 9:05:49 ?? org.hibernate.cfg.Configuration doConfigure
 INFO: HHH000041: Configured SessionFactory: null
-5 17, 2015 9:27:39 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+5 20, 2015 9:05:49 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
 WARN: HHH000402: Using Hibernate built-in connection pool (not for production use!)
-5 17, 2015 9:27:39 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+5 20, 2015 9:05:49 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
 INFO: HHH000401: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/spasskaya_ovsiichuk_news_task?autoReconnect=true&amp;useUnicode=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf-8]
-5 17, 2015 9:27:39 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+5 20, 2015 9:05:49 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
 INFO: HHH000046: Connection properties: {user=root, password=****}
-5 17, 2015 9:27:39 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+5 20, 2015 9:05:49 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
 INFO: HHH000006: Autocommit mode: false
-5 17, 2015 9:27:39 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+5 20, 2015 9:05:49 ?? org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
 INFO: HHH000115: Hibernate connection pool size: 10 (min=1)
-5 17, 2015 9:27:39 ?? org.hibernate.dialect.Dialect &lt;init&gt;
+5 20, 2015 9:05:49 ?? org.hibernate.dialect.Dialect &lt;init&gt;
 INFO: HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
-5 17, 2015 9:27:39 ?? org.hibernate.engine.jdbc.internal.LobCreatorBuilder useContextualLobCreation
+5 20, 2015 9:05:49 ?? org.hibernate.engine.jdbc.internal.LobCreatorBuilder useContextualLobCreation
 INFO: HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
-5 17, 2015 9:27:40 ?? org.hibernate.engine.transaction.internal.TransactionFactoryInitiator initiateService
+5 20, 2015 9:05:49 ?? org.hibernate.engine.transaction.internal.TransactionFactoryInitiator initiateService
 INFO: HHH000399: Using default transaction strategy (direct JDBC transactions)
-5 17, 2015 9:27:40 ?? org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory &lt;init&gt;
+5 20, 2015 9:05:49 ?? org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory &lt;init&gt;
 INFO: HHH000397: Using ASTQueryTranslatorFactory
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
 INFO: HHH000228: Running hbm2ddl schema update
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
 INFO: HHH000102: Fetching database metadata
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
 INFO: HHH000396: Updating schema
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000261: Table found: spasskaya_ovsiichuk_news_task.article
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000037: Columns: [article_id, date, titre, sielectronique, source, contenu]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000108: Foreign keys: []
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000126: Indexes: [primary]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000261: Table found: spasskaya_ovsiichuk_news_task.article_auteur
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000037: Columns: [article_id, auteur_id]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000108: Foreign keys: [fk_hfdk0n61gcuttuhuqxx4sjsb9, fk_995st50dup6dfopsyadfrpev8]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000126: Indexes: [fk_995st50dup6dfopsyadfrpev8, primary]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000261: Table found: spasskaya_ovsiichuk_news_task.auteur
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000037: Columns: [auteur_id, nom, prenom]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000108: Foreign keys: []
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000126: Indexes: [primary]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000261: Table found: spasskaya_ovsiichuk_news_task.photo
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
-INFO: HHH000037: Columns: [date, photo_id, largeur, titre, format, source, hauteur, sicoloree]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+INFO: HHH000037: Columns: [date, image, photo_id, largeur, titre, format, source, hauteur, sicoloree]
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000108: Foreign keys: []
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000126: Indexes: [primary]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000261: Table found: spasskaya_ovsiichuk_news_task.photo_auteur
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000037: Columns: [auteur_id, photo_id]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000108: Foreign keys: [fk_o3w580cuoe5216jnscef8wt58, fk_dwd7ig4jgw16pvwov1syxtd2d]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.TableMetadata &lt;init&gt;
 INFO: HHH000126: Indexes: [fk_dwd7ig4jgw16pvwov1syxtd2d, primary]
-5 17, 2015 9:27:40 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
+5 20, 2015 9:05:50 ?? org.hibernate.tool.hbm2ddl.SchemaUpdate execute
 INFO: HHH000232: Schema update complete
 </system-err>
   </testcase>

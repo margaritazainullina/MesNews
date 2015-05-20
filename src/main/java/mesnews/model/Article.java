@@ -5,15 +5,10 @@
  */
 package mesnews.model;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,34 +17,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mesnews.Lire;
-import static mesnews.db.NewsAbstractService.idx;
-import static mesnews.db.NewsAbstractService.newsIndex;
-import static mesnews.db.NewsAbstractService.searcher;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.BaseCompositeReader;
-import org.apache.lucene.index.ExitableDirectoryReader;
-import org.apache.lucene.index.FilterIndexReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.TermEnum;
-import org.apache.lucene.index.TermFreqVector;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MultiTermQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.store.RAMDirectory;
 import org.hibernate.annotations.Type;
 
 /**
@@ -169,6 +140,18 @@ public class Article extends News {
     public void setAuteurs(Set<Auteur> article_auteurs) {
         this.article_auteurs = article_auteurs;
     }
+
+    public String getAutorsString() {
+        if (article_auteurs.size() == 0) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        for (Auteur a : article_auteurs) {
+            sb.append(a + " ,");
+        }
+        return sb.toString().substring(0, sb.length() - 2);
+    }
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
@@ -220,4 +203,19 @@ public class Article extends News {
         return doc;
     }
 
+    @Override
+    public void addAuteur(Auteur auteur) {
+        this.article_auteurs.add(auteur);
+    }
+
+    public String info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(source);
+        if (siElectronique) {
+            sb.append("\nEn version electronique.");
+        } else {
+            sb.append("\nN'est pas en version electronique.");
+        }
+        return sb.toString();
+    }
 }

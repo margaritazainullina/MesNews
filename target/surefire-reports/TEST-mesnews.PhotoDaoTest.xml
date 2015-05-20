@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="1" name="mesnews.PhotoDaoTest" time="0.062" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="mesnews.PhotoDaoTest" time="0.015" errors="1" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_25\jre\bin"/>
@@ -61,41 +61,36 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="mesnews.PhotoDaoTest" name="CRUDPhotoTest" time="0.057">
-    <failure message="expected:&lt;Information:
-Titre: Some photo
-Date: 2015-05-17
-Auteur: [wiki null]
-Source: http://123.com
-Info:
-.jpg, 1024*700, coloree
-&gt; but was:&lt;Information:
-Titre: Some photo
-Date: 2015-05-17
-Auteur: []
-Source: http://123.com
-Info:
-.jpg, 1024*700, coloree
-&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;Information:
-Titre: Some photo
-Date: 2015-05-17
-Auteur: [wiki null]
-Source: http://123.com
-Info:
-.jpg, 1024*700, coloree
-&gt; but was:&lt;Information:
-Titre: Some photo
-Date: 2015-05-17
-Auteur: []
-Source: http://123.com
-Info:
-.jpg, 1024*700, coloree
-&gt;
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:743)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at org.junit.Assert.assertEquals(Assert.java:144)
-	at mesnews.PhotoDaoTest.CRUDPhotoTest(PhotoDaoTest.java:64)
+  <testcase classname="mesnews.PhotoDaoTest" name="CRUDPhotoTest" time="0.007">
+    <error message="could not execute statement" type="org.hibernate.exception.ConstraintViolationException">org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:129)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:49)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:126)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:112)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:211)
+	at org.hibernate.id.IdentityGenerator$GetGeneratedKeysDelegate.executeAndExtract(IdentityGenerator.java:96)
+	at org.hibernate.id.insert.AbstractReturningDelegate.performInsert(AbstractReturningDelegate.java:58)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3032)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3558)
+	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:98)
+	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:492)
+	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:197)
+	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:181)
+	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:216)
+	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:334)
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:289)
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:195)
+	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:126)
+	at org.hibernate.event.internal.DefaultSaveOrUpdateEventListener.saveWithGeneratedOrRequestedId(DefaultSaveOrUpdateEventListener.java:209)
+	at org.hibernate.event.internal.DefaultSaveEventListener.saveWithGeneratedOrRequestedId(DefaultSaveEventListener.java:55)
+	at org.hibernate.event.internal.DefaultSaveOrUpdateEventListener.entityIsTransient(DefaultSaveOrUpdateEventListener.java:194)
+	at org.hibernate.event.internal.DefaultSaveEventListener.performSaveOrUpdate(DefaultSaveEventListener.java:49)
+	at org.hibernate.event.internal.DefaultSaveOrUpdateEventListener.onSaveOrUpdate(DefaultSaveOrUpdateEventListener.java:90)
+	at org.hibernate.internal.SessionImpl.fireSave(SessionImpl.java:715)
+	at org.hibernate.internal.SessionImpl.save(SessionImpl.java:707)
+	at org.hibernate.internal.SessionImpl.save(SessionImpl.java:702)
+	at mesnews.dao.PhotoDao.savePhoto(PhotoDao.java:36)
+	at mesnews.PhotoDaoTest.CRUDPhotoTest(PhotoDaoTest.java:39)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -126,6 +121,27 @@ Info:
 	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175)
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
-</failure>
+Caused by: com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException: Column &apos;image&apos; cannot be null
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:931)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:2941)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1623)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:1715)
+	at com.mysql.jdbc.Connection.execSQL(Connection.java:3249)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1268)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:1541)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:1455)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:1440)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:208)
+	... 53 more
+</error>
+    <system-err>5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+WARN: SQL Error: 1048, SQLState: 23000
+5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+ERROR: Column &apos;image&apos; cannot be null
+5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler logWarning
+WARN: SQL Warning Code: 1048, SQLState: HY000
+5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler logWarning
+WARN: Column &apos;image&apos; cannot be null
+</system-err>
   </testcase>
 </testsuite>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="645.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ArticlePreviewWindowController">
+    <children>
+        <Label id="titleLabel" fx:id="titleLabel" alignment="TOP_CENTER" layoutX="19.0" layoutY="35.0" prefHeight="51.0" prefWidth="572.0" wrapText="true">
+            <font>
+                <Font size="23.0" />
+            </font>
+        </Label>
+        <Label fx:id="authorLabel" layoutX="42.0" layoutY="565.0" text="Label">
+            <font>
+                <Font name="System Italic" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="dateLabel" layoutX="488.0" layoutY="565.0" text="Label">
+            <font>
+                <Font name="System Italic" size="12.0" />
+            </font>
+        </Label>       
+        <Button layoutX="268.0" layoutY="594.0" mnemonicParsing="false" onAction="#publishButtonAction" text="Publier">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Button>
+        <Label fx:id="infoLabel" layoutX="42.0" layoutY="505.0" text="Label" />
+        <Label fx:id="keywordsLabel" layoutX="42.0" layoutY="69.0" text="Label" wrapText="true" />
+      <TextArea fx:id="textArea" editable="false" layoutX="42.0" layoutY="95.0" prefHeight="406.0" prefWidth="529.0" wrapText="true" />
+    </children>
+</AnchorPane>
