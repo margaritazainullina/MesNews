@@ -125,7 +125,7 @@ public class Photo extends News {
     }
 
     public File getImage() throws IOException {
-        File f = new File("image"+".jpg");
+        File f = new File("image" + ".jpg");
         FileUtils.writeByteArrayToFile(f, Base64.getDecoder().decode(image));
         return f;
     }
@@ -288,13 +288,13 @@ public class Photo extends News {
         // Add source as an unindexed field...
         doc.add(Field.UnIndexed("id", this.id + ""));
         doc.add(Field.UnIndexed("source", this.source.toString()));
-
+        doc.add(Field.UnIndexed("title", this.titre));
         // ...and the content as an indexed field. Note that indexed
         // Text fields are constructed using a Reader. Lucene can read
         // and index very large chunks of text, without storing the
         // entire content verbatim in the index. In this example we
         // can just wrap the content string in a StringReader.
-        doc.add(Field.Text("titre", this.titre, true));
+        doc.add(Field.Text("content", this.titre, true));
 
         return doc;
     }

@@ -105,7 +105,7 @@ public class MesNews {
             }
         }
         try {
-            base.indexNews();
+            NewsAbstractService.indexNews();
         } catch (IOException ex) {
             Logger.getLogger(MesNews.class.getName()).log(Level.SEVERE, null, ex);
         }

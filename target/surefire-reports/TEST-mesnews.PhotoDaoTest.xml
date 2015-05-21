@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="mesnews.PhotoDaoTest" time="0.015" errors="1" skipped="0">
+<testsuite tests="1" failures="0" name="mesnews.PhotoDaoTest" time="0.026" errors="1" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_25\jre\bin"/>
@@ -61,7 +61,7 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="mesnews.PhotoDaoTest" name="CRUDPhotoTest" time="0.007">
+  <testcase classname="mesnews.PhotoDaoTest" name="CRUDPhotoTest" time="0.021">
     <error message="could not execute statement" type="org.hibernate.exception.ConstraintViolationException">org.hibernate.exception.ConstraintViolationException: could not execute statement
 	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:129)
 	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:49)
@@ -134,13 +134,13 @@ Caused by: com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException:
 	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:208)
 	... 53 more
 </error>
-    <system-err>5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+    <system-err>5 21, 2015 10:08:02 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
 WARN: SQL Error: 1048, SQLState: 23000
-5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+5 21, 2015 10:08:02 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
 ERROR: Column &apos;image&apos; cannot be null
-5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler logWarning
+5 21, 2015 10:08:02 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler logWarning
 WARN: SQL Warning Code: 1048, SQLState: HY000
-5 20, 2015 9:05:51 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler logWarning
+5 21, 2015 10:08:02 ?? org.hibernate.engine.jdbc.spi.SqlExceptionHelper$StandardWarningHandler logWarning
 WARN: Column &apos;image&apos; cannot be null
 </system-err>
   </testcase>

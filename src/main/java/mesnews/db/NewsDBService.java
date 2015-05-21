@@ -34,12 +34,12 @@ public final class NewsDBService extends NewsAbstractService implements Serializ
         //load photos
         //load articles
         //merge collections and sort by date
+        news.clear();
         news.addAll(PhotoDao.listPhotos());
         news.addAll(ArticleDao.listArticles());
     }
 
-    @Override
-    public void ajouter(News n) {
+     public static void ajouter(News n) {
         news.add(n);
         if (n instanceof Article) {
             ArticleDao.saveArticle((Article) n);

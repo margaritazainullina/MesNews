@@ -43,7 +43,7 @@ public class ArticlePreviewWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO get from storage
-        article = ArticleDao.listArticles().get(0);
+        article = (Article)MainWindowController.currentNews;
         
         titleLabel.setText(article.getTitre());
         authorLabel.setText("Auteur: " + article.getAutorsString());
@@ -51,7 +51,7 @@ public class ArticlePreviewWindowController implements Initializable {
         textArea.setText(article.getContenu());
         
         infoLabel.setText(article.info());
-        keywordsLabel.setText(article.getKeyWordsString());
+        keywordsLabel.setText("Keywords: "+article.getKeyWordsString());
     }
     
 }

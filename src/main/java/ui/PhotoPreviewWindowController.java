@@ -60,14 +60,14 @@ public class PhotoPreviewWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO get from storage
-        photo = PhotoDao.listPhotos().get(0);
+        photo = (Photo) MainWindowController.currentNews;
 
         titleLabel.setText(photo.getTitre());
         authorLabel.setText("Auteur: " + photo.getAutorsString());
         dateLabel.setText(photo.getDate().toString());
-        
+
         try {
-           photoImage.setImage(new Image(new FileInputStream(photo.getImage())));
+            photoImage.setImage(new Image(new FileInputStream(photo.getImage())));
         } catch (IOException ex) {
             Logger.getLogger(PhotoPreviewWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }

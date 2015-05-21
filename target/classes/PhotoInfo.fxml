@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="645.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PhotoPreviewWindowController">
+   <children>
+      <Label id="titleLabel" fx:id="titleLabel" alignment="TOP_CENTER" layoutX="19.0" layoutY="35.0" prefHeight="51.0" prefWidth="572.0">
+         <font>
+            <Font size="23.0" />
+         </font></Label>
+      <Label fx:id="authorLabel" layoutX="58.0" layoutY="566.0" text="Label">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font></Label>
+      <Label fx:id="dateLabel" layoutX="488.0" layoutY="565.0" text="Label">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font></Label>
+      <Label fx:id="infoLabel" layoutX="58.0" layoutY="506.0" text="Label" />
+      <Label fx:id="keywordsLabel" layoutX="42.0" layoutY="69.0" text="Label" />
+      <ImageView fx:id="photoImage" fitHeight="406.0" fitWidth="523.0" layoutX="44.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="454.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/calendar-24.png');;" />
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="28.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/user-24.png');" />
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="28.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('https://cdn2.iconfinder.com/data/icons/flat-ui-icons-24-px/24/photo-24-24.png');" />
+   </children>
+</AnchorPane>

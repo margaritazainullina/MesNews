@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="616.0" prefWidth="605.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ui.MainWindowController">
+<AnchorPane id="AnchorPane" prefHeight="533.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController">
     <children>
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-        <Button fx:id="button" layoutX="97.0" layoutY="283.0" onAction="#handleButtonAction" text="Click Me!" textOverrun="WORD_ELLIPSIS" />
+        <Pagination fx:id="paginator" layoutX="-2.0" layoutY="92.0" prefHeight="442.0" prefWidth="683.0" />
+        <ComboBox fx:id="sortComboBox" layoutX="109.0" layoutY="29.0" prefWidth="150.0" onAction="#sort"  />
+        <Label layoutX="40.0" layoutY="33.0" prefHeight="17.0" prefWidth="62.0" text="Trier par" />
+        <Label layoutX="342.0" layoutY="33.0" prefHeight="17.0" prefWidth="62.0" text="Chercher" />
+        <TextField fx:id="searchTextBox" layoutX="410.0" layoutY="33.0" prefHeight="25.0" prefWidth="230.0" />
+        <Button fx:id="searchButton" alignment="CENTER_RIGHT" layoutX="573.0" layoutY="63.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="87.0" style="-fx-background-image: url('https://cdn1.iconfinder.com/data/icons/free-98-icons/32/search-24.png'); -fx-background-repeat: no-repeat;" text="Chercher" textAlignment="RIGHT" />
+        <Button fx:id="cancelButton" layoutX="635.0" layoutY="33.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" 
+                prefWidth="25.0" style="-fx-background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/26/cancel.png'); -fx-background-repeat: no-repeat;" textAlignment="RIGHT" />
     </children>
 </AnchorPane>

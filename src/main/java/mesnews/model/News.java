@@ -73,7 +73,7 @@ public abstract class News implements Comparable<News>, Serializable {
         }
         StringBuffer sb = new StringBuffer();
         for (String kw : keyWords) {
-            sb.append(kw + " ,");
+            sb.append(kw + ", ");
         }
         return sb.toString().substring(0, sb.length() - 2);
     }
@@ -147,7 +147,7 @@ public abstract class News implements Comparable<News>, Serializable {
     //default - sort by date
     @Override
     public int compareTo(News another) {
-        return this.titre.compareTo(another.titre);
+        return  (another.date.compareTo(this.date));
     }
 
     public enum NewsComparator implements Comparator<News> {
@@ -161,13 +161,13 @@ public abstract class News implements Comparable<News>, Serializable {
         DATE {
                     @Override
                     public int compare(News n1, News n2) {
-                        return (n1.date.compareTo(n2.date));
+                        return (n2.date.compareTo(n1.date));
                     }
                 },
         AUTEUR {
                     @Override
                     public int compare(News n1, News n2) {
-                        return 0;//(n1.auteurs.toString().compareTo(n2.auteurs.toString()));
+                        return (n1.getAuteurs().toString().compareTo(n2.getAuteurs().toString()));
                     }
                 },
         SOURCE {
@@ -179,9 +179,8 @@ public abstract class News implements Comparable<News>, Serializable {
         KEYWORDS {
                     @Override
                     public int compare(News n1, News n2) {
-                        //TODO: compare!
-                        return 0;
-                    }
+                        return (n1.keyWords.toString().compareTo(n2.keyWords.toString()));
+                   }
                 };
     }
 

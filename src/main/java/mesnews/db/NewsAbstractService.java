@@ -41,20 +41,20 @@ public abstract class NewsAbstractService {
     public static RAMDirectory idx;
 
     //getteurs and setteurs pour collection
-    public TreeSet<News> getNews() {
+    public static TreeSet<News> getNews() {
         return news;
     }
 
-    public void setNews(TreeSet<News> news) {
-        this.news = news;
+    public static void setNews(TreeSet<News> news) {
+        NewsAbstractService.news = news;
     }
 
     //ajoute une nouvelle
-    public void ajouter(News n) {
+    public static void ajouter(News n) {
         news.add(n);
     }
 
-    public void afficher() {
+    public static void afficher() {
         if (news.isEmpty()) {
             System.out.println("La base est vide!");
         } else {
@@ -65,46 +65,46 @@ public abstract class NewsAbstractService {
         });
     }
 
-    public Set<News> getNewsSortedByTitre() {
+    public static Set<News> getNewsSortedByTitre() {
         Set newSet = new TreeSet(News.NewsComparator.TITRE);
         newSet.addAll(news);
         return newSet;
     }
 
-    public Set<News> getNewsSortedByAuteur() {
+    public static Set<News> getNewsSortedByAuteur() {
         Set newSet = new TreeSet(News.NewsComparator.AUTEUR);
         newSet.addAll(news);
         return newSet;
     }
 
-    public Set<News> getNewsSortedByDate() {
+    public static Set<News> getNewsSortedByDate() {
         Set newSet = new TreeSet(News.NewsComparator.DATE);
         newSet.addAll(news);
         return newSet;
     }
 
-    public Set<News> getNewsSortedBySource() {
+    public static Set<News> getNewsSortedBySource() {
         Set newSet = new TreeSet(News.NewsComparator.SOURCE);
         newSet.addAll(news);
         return newSet;
     }
 
-    public Set<News> getNewsSortedByKeywords() {
+    public static Set<News> getNewsSortedByKeywords() {
         Set newSet = new TreeSet(News.NewsComparator.KEYWORDS);
         newSet.addAll(news);
         return newSet;
     }
 
-    public void indexNews() throws IOException {
+    public static void indexNews() throws IOException {
         idx = new RAMDirectory();
-
+            
         //create overall index
+        newsIndex = new IndexWriter(idx, new StandardAnalyzer(), true);
         for (News n : news) {
-            newsIndex = new IndexWriter(idx, new StandardAnalyzer(), true);
             newsIndex.addDocument(n.createDocument()); // Optimize and close the writer to finish building the index
-            newsIndex.optimize();
-            newsIndex.close();
         }
+        newsIndex.optimize();
+        newsIndex.close();
 
         for (News n : news) {
             RAMDirectory documentIdx = new RAMDirectory();
@@ -157,7 +157,7 @@ public abstract class NewsAbstractService {
      * @throws org.apache.lucene.queryParser.ParseException
      * @throws java.io.IOException
      */
-    public TreeSet<News> rechercher(String queryString)
+    public static TreeSet<News> rechercher(String queryString)
             throws ParseException, IOException {
         // indexNews();
         TreeSet<News> result = new TreeSet<>();
@@ -188,7 +188,7 @@ public abstract class NewsAbstractService {
         return result;
     }
 
-    private News getNewsByTitle(String title) {
+    private static News getNewsByTitle(String title) {
         Iterator<News> it = news.iterator();
 
         while (it.hasNext()) {
@@ -200,7 +200,7 @@ public abstract class NewsAbstractService {
         return null;
     }
 
-    public Set<News> search(String queryString) throws IOException, ParseException {
+    public static Set<News> search(String queryString) throws IOException, ParseException {
         Set<News> result = new HashSet<News>();
 
         // Build an IndexSearcher using the in-memory index
@@ -227,5 +227,4 @@ public abstract class NewsAbstractService {
         }
         return result;
     }
-        
 }

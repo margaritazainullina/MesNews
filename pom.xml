@@ -102,8 +102,7 @@
             <version>2.4</version>
         </dependency>
 
-
-        
+             
         <!--Database persistence-->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

@@ -20,7 +20,7 @@ public class JavaFXApplication1 extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         setUserAgentStylesheet(STYLESHEET_MODENA);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("PhotoPreviewWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("MainWindow.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

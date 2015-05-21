@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: mesnews.PhotoDaoTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.008 sec <<< FAILURE!
-CRUDPhotoTest(mesnews.PhotoDaoTest)  Time elapsed: 0.007 sec  <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.022 sec <<< FAILURE!
+CRUDPhotoTest(mesnews.PhotoDaoTest)  Time elapsed: 0.021 sec  <<< ERROR!
 org.hibernate.exception.ConstraintViolationException: could not execute statement
 	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:129)
 	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:49)
