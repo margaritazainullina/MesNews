@@ -8,7 +8,6 @@ package ui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -17,30 +16,28 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import mesnews.db.NewsAbstractService;
-import mesnews.db.NewsDBService;
 import mesnews.model.News;
 import mesnews.model.Photo;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.util.ArrayUtil;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  *
@@ -48,70 +45,127 @@ import org.apache.lucene.util.ArrayUtil;
  */
 public class MainWindowController implements Initializable {
 
+    NewsAbstractService service = NewsAbstractService.INSTANCE;
+
     @FXML
     private Pagination paginator;
+    @FXML
+    private Label noEntriesLabel;
 
-    private List<News> news = new ArrayList<>();
+    private final List<News> news = new ArrayList<>();
     public static News currentNews;
+    public static boolean isForUpdate;
 
     @FXML
     private ComboBox sortComboBox;
-    @FXML
-    private CheckBox electroniqueCheckBox;
     @FXML
     private TextField searchTextBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadAll();
-        paginator.setUserData(url);
+        updateEntries();
+
+        if (news.size() != 0) {
+            paginator.setUserData(url);
+        }
     }
 
     public VBox createPage(int pageIndex) {
-        //set elemenst of combobox
-        ObservableList<String> values = FXCollections.observableArrayList("Par date", "Par titre",
-                "Par auteur", "Par source", "Par keywords");
-        sortComboBox.setItems(values);
-        sortComboBox.setValue(values.get(0));
-
         VBox box = new VBox();
-        int page = pageIndex;
-        for (int i = page; i < page + 1; i++) {
-            VBox element = new VBox();
-            currentNews = news.get(i);
-            //load fragments - Panes with Photo or Qrticle info
-            if (currentNews instanceof Photo) {
-                try {
-                    Parent root = new FXMLLoader().load(getClass().getResource("/PhotoInfo.fxml"));
-                    element.getChildren().addAll(root);
-                    box.getChildren().add(element);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                try {
-                    Parent root = new FXMLLoader().load(getClass().getResource("/ArticleInfo.fxml"));
-                    element.getChildren().addAll(root);
-                    box.getChildren().add(element);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        if (pageIndex < news.size()) {
+            //set elemenst of combobox
+            ObservableList<String> values = FXCollections.observableArrayList("Par date", "Par titre",
+                    "Par auteur", "Par source", "Par keywords");
+            sortComboBox.setItems(values);
+            sortComboBox.setValue(values.get(0));
+
+            int page = pageIndex;
+            for (int i = page; i < page + 1; i++) {
+                VBox element = new VBox();
+                currentNews = news.get(i);
+                //load fragments - Panes with Photo or Qrticle info
+                if (currentNews instanceof Photo) {
+                    try {
+                        Parent root = new FXMLLoader().load(getClass().getResource("/PhotoInfo.fxml"));
+                        element.getChildren().addAll(root);
+                        box.getChildren().add(element);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    try {
+                        Parent root = new FXMLLoader().load(getClass().getResource("/ArticleInfo1.fxml"));
+                        element.getChildren().addAll(root);
+                        box.getChildren().add(element);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
         return box;
     }
 
-    public void loadAll() {
-        NewsDBService.load();
-        try {
-            NewsDBService.indexNews();
-        } catch (IOException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+    @FXML
+    private void insert(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/AddWindow2.fxml"));
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setTitle("Mettre a jour");
+        stage.setScene(new Scene(root));
+        stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                updateEntries();
+            }
+        });
+    }
+
+    @FXML
+    private void update(ActionEvent event) throws IOException {
+        isForUpdate = true;
+
+        Parent root = FXMLLoader.load(getClass().getResource("/AddWindow2.fxml"));
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setTitle("Mettre a jour");
+        stage.setScene(new Scene(root));
+        stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                updateEntries();
+            }
+        });
+    }
+
+    @FXML
+    private void delete(ActionEvent event) {
+        Action response = Dialogs.create()
+                .owner(new Stage())
+                .title("Confirmation")
+                .masthead("Supprimer")
+                .message("Voulez vous supprimer cette nouvelle?")
+                .actions(Dialog.ACTION_YES, Dialog.ACTION_NO)
+                .showConfirm();
+
+        if (response == Dialog.ACTION_YES) {
+            service.delete(currentNews);
+            updateEntries();
         }
+
+    }
+
+    public void updateEntries() {
         news.clear();
-        news.addAll(NewsDBService.INSTANCE.news);
-        paginator.setPageFactory((Integer pageIndex) -> createPage(pageIndex));
+        news.addAll(service.news);
         paginator.setPageCount(news.size());
+        if (!news.isEmpty()) {
+            paginator.setPageFactory((Integer pageIndex) -> createPage(pageIndex));
+        } else {
+            noEntriesLabel.setOpacity(1);
+        }
     }
 
     @FXML
@@ -119,13 +173,14 @@ public class MainWindowController implements Initializable {
         String query = searchTextBox.getText().trim();
         if (!query.isEmpty()) {
             try {
-                Set<News> result = NewsDBService.search(query);
+                Set<News> result = service.search(query);
                 if (result.isEmpty()) {
-                    Stage dialog = new Stage();
-                    dialog.initStyle(StageStyle.UTILITY);
-                    Scene scene = new Scene(new Group(new Text(40, 40, "Il n'y a aucun résultat pour votre recherche.")));
-                    dialog.setScene(scene);
-                    dialog.show();
+                    Dialogs.create()
+                            .owner(new Stage())
+                            .title("Recherche")
+                            .masthead(null)
+                            .message("Il n'y a aucun résultat pour votre recherche.")
+                            .showInformation();
                 } else {
                     news.clear();
                     news.addAll(result);
@@ -173,6 +228,6 @@ public class MainWindowController implements Initializable {
     @FXML
     private void cancel(ActionEvent event) {
         searchTextBox.setText("");
-        loadAll();
+        updateEntries();
     }
 }

@@ -81,7 +81,7 @@ public class NewsFileTest {
     @Test(expected = IOException.class)
     public void sauvegarderExceptionTest() throws IOException {
         String path = "\n\n\n";
-        news.serialize(path);
+        news.saveToFile(path);
     }
 
     @Test
@@ -91,42 +91,36 @@ public class NewsFileTest {
         //String titre, LocalDate date, Set<Auteur> auteurs, URL source, String contenu, boolean siElectronique) {
         Set<Auteur> auteurs = new HashSet<>();
         auteurs.add(new Auteur(0, "Spasskaya", "Rita"));
+        int size = news.getNews().size();
+        
+        news.add(new Article("Breaking news!", l, auteurs, url, "contenu1", true));
+        news.add(new Photo(".jpg", 800, 600, true, "Some test Photo", l, auteurs, url, null));
 
-        news.ajouter(new Article("Breaking news!", l, auteurs, url, "contenu", true));
-        news.ajouter(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, auteurs, url, null));
-
-        assertEquals(news.getNews().size(), 2);
+        assertEquals(news.getNews().size(), size+2);
     }
 
     @Test(expected = DateTimeException.class)
     public void ajouterExceptionDateTest() throws MalformedURLException {
         LocalDate l = LocalDate.of(0, Month.JANUARY, -1);
         URL url = new URL("http://news.com/article1");
-        news.ajouter(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url, null));
+        news.add(new Photo(".jpg", 800, 600, true, "Some Photo", l, null, url, null));
     }
 
     @Test(expected = MalformedURLException.class)
     public void ajouterExceptionUrlTest() throws MalformedURLException {
         URL url = new URL("\n");
         LocalDate l = LocalDate.of(2014, Month.JANUARY, 1);
-        news.ajouter(new Photo(0, ".jpg", 800, 600, true, "Some Photo", l, null, url, null));
+        news.add(new Photo(".jpg", 800, 600, true, "Some Photo", l, null, url, null));
     }
 
     @Test
     public void sauvegarderOuvrirTest() throws IOException, FileNotFoundException, ClassNotFoundException {
         int hash1 = news.hashCode();
         String path = "base.txt";
-        news.serialize(path);
-        news.deserialize(path);
+        news.saveToFile(path);
+        news.loadFromFile(path);
         int hash2 = news.hashCode();
         assertEquals(hash1, hash2);
-    }
-
-    @Test
-    public void afficherTest() {
-        news.setNews(new TreeSet<News>());
-        news.afficher();
-        assertEquals("La base est vide!", outContent.toString().trim());
     }
 
 }

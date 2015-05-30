@@ -8,7 +8,6 @@ package mesnews.model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,21 +37,21 @@ public class Auteur implements Serializable {
     @Column(name = "prenom")
     private String prenom;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Article.class)
     @JoinTable(name = "ARTICLE_AUTEUR",
             joinColumns = {
                 @JoinColumn(name = "AUTEUR_ID")},
             inverseJoinColumns = {
                 @JoinColumn(name = "ARTICLE_ID")})
-    private Set<Article> articles = new HashSet<Article>();
+    private Set<Article> articles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Photo.class)
     @JoinTable(name = "PHOTO_AUTEUR",
             joinColumns = {
                 @JoinColumn(name = "AUTEUR_ID")},
             inverseJoinColumns = {
                 @JoinColumn(name = "PHOTO_ID")})
-    private Set<Photo> photos = new HashSet<Photo>();
+    private Set<Photo> photos = new HashSet<>();
 
     public Auteur(int id, String nom, String prenom) {
         this.auteur_id = id;
@@ -84,6 +83,22 @@ public class Auteur implements Serializable {
         this.prenom = prenom;
     }
 
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
+    }
+
     @Override
     public String toString() {
         return nom + " " + prenom;
@@ -91,28 +106,30 @@ public class Auteur implements Serializable {
 
     public Auteur() {
     }
-    
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-            // if deriving: appendSuper(super.hashCode()).
-            append(nom).
-            append(prenom).
-            toHashCode();
+                // if deriving: appendSuper(super.hashCode()).
+                append(nom).
+                append(prenom).
+                toHashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-       if (!(obj instanceof Auteur))
+        if (!(obj instanceof Auteur)) {
             return false;
-        if (obj == this)
+        }
+        if (obj == this) {
             return true;
+        }
 
         Auteur rhs = (Auteur) obj;
         return new EqualsBuilder().
-            // if deriving: appendSuper(super.equals(obj)).
-            append(nom, rhs.nom).
-            append(prenom, rhs.prenom).
-            isEquals();
+                // if deriving: appendSuper(super.equals(obj)).
+                append(nom, rhs.nom).
+                append(prenom, rhs.prenom).
+                isEquals();
     }
 }

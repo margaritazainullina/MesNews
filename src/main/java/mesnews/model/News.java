@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import mesnews.Lire;
 import mesnews.util.LocalDatePersistenceConverter;
 import org.apache.lucene.document.Document;
 
@@ -27,17 +26,22 @@ import org.apache.lucene.document.Document;
  * l’information. Vous utiliserez la classe URL.
  */
 @MappedSuperclass
-public abstract class News implements Comparable<News>, Serializable {
+public abstract class News implements Comparable<News>, Serializable, Cloneable {
 
     @Column(name = "titre")
     protected String titre;
     @Convert(converter = LocalDatePersistenceConverter.class)
-    @Column(name = "date")
+    @Column(name = "news_date")
     protected LocalDate date;
     @Column(name = "source")
     protected URL source;
     @Transient
     Set<String> keyWords = new HashSet<>();
+
+    @Override
+    public News clone() throws CloneNotSupportedException {
+        return (News)super.clone();
+    }
 
     public String getTitre() {
         return titre;
@@ -93,36 +97,6 @@ public abstract class News implements Comparable<News>, Serializable {
     public News() {
     }
 
-    public void inserer() {
-        System.out.println("Entrez le titre");
-        this.titre = Lire.S();
-
-        //parce date
-        do {
-            try {
-                System.out.println("Entrez le date en format yyyy-mm-dd");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                this.date = LocalDate.parse(Lire.S(), formatter);
-            } catch (Exception e) {
-                System.err.println("Erreur dans l'information!");
-            }
-        } while (this.date == null);
-
-        System.out.println("Entrez l'auteur");
-         //TODO
-        //this.auteur = Lire.S();
-
-        //parce url
-        do {
-            try {
-                System.out.println("Entrez la source");
-                this.source = new URL(Lire.S());
-            } catch (Exception e) {
-                System.err.println("Erreur dans l'information!");
-            }
-        } while (this.source == null);
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -147,7 +121,7 @@ public abstract class News implements Comparable<News>, Serializable {
     //default - sort by date
     @Override
     public int compareTo(News another) {
-        return  (another.date.compareTo(this.date));
+        return (another.date.compareTo(this.date));
     }
 
     public enum NewsComparator implements Comparator<News> {
@@ -180,7 +154,7 @@ public abstract class News implements Comparable<News>, Serializable {
                     @Override
                     public int compare(News n1, News n2) {
                         return (n1.keyWords.toString().compareTo(n2.keyWords.toString()));
-                   }
+                    }
                 };
     }
 

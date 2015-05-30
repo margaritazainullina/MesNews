@@ -10,10 +10,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="645.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PhotoPreviewWindowController">
+<AnchorPane id="AnchorPane" prefHeight="665.0" prefWidth="605.0" style="-fx-background-image: url('http://www.wallpaperup.com/uploads/wallpapers/2012/10/03/17962/d73fe7b80aab975600d1f1a3c91a3bd0.jpg');" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.PhotoPreviewWindowController">
     <children>
        <fx:include source="PhotoInfo.fxml" />    
-        <Button alignment="CENTER_RIGHT" layoutX="241.0" layoutY="592.0" mnemonicParsing="false" onAction="#publishButtonAction" prefHeight="31.0" prefWidth="95.0" style="-fx-background-repeat: no-repeat; -fx-background-position: left center; -fx-background-image: url('https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/More-24.png');" text="Publier" textAlignment="RIGHT">
+        <Button alignment="CENTER" layoutX="241.0" layoutY="609.0" mnemonicParsing="false" onAction="#publishButtonAction" prefHeight="49.0" prefWidth="136.0" style="-fx-graphic: url('https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_publish_48px-24.png');" text="Publier" textAlignment="RIGHT">
             <font>
                 <Font size="16.0" />
             </font>
@@ -21,5 +21,6 @@
             <Insets />
          </opaqueInsets>
         </Button>
+      <Pane layoutX="24.0" layoutY="29.0" prefHeight="602.0" prefWidth="552.0" />
         </children>
 </AnchorPane>

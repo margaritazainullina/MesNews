@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="AnchorPane" prefHeight="803.0" prefWidth="720.0" style="-fx-background-image: url('http://www.wallpaperup.com/uploads/wallpapers/2012/10/03/17962/d73fe7b80aab975600d1f1a3c91a3bd0.jpg');" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AddWindowController">
+  
+    <children>
+        <Button fx:id="addButton" layoutX="177.0" layoutY="745.0" onAction="#addButtonAction" prefHeight="44.0" prefWidth="202.0" style="-fx-graphic: url('https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/More-24.png');" text="Ajouter" textOverrun="WORD_ELLIPSIS">
+            <font>
+                <Font size="16.0" />
+            </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+        </Button>
+        <Pane fx:id="paneGeneral" layoutX="23.0" layoutY="101.0" prefHeight="168.0" prefWidth="347.0" style="-fx-background-color: #ffffff44;" styleClass="pane">
+            <children>
+                <Label layoutX="14.0" layoutY="30.0" text="Titre" />
+                <Label layoutX="14.0" layoutY="99.0" text="Date">
+               <font>
+                  <Font name="Segoe WP" size="14.0" />
+               </font></Label>
+                <Label layoutX="14.0" layoutY="66.0" text="Source" />
+                <DatePicker fx:id="dateText" layoutX="120.0" layoutY="95.0" />
+                <TextField fx:id="titleText" layoutX="120.0" layoutY="18.0" prefHeight="25.0" prefWidth="183.0" />
+                <TextField fx:id="sourceText" layoutX="120.0" layoutY="54.0" prefHeight="25.0" prefWidth="183.0" />
+                <Label fx:id="titleTextError" layoutX="310.0" layoutY="69.0" opacity="0.0" text="Erreur" textFill="RED" />
+                <Label fx:id="sourceTextError" layoutX="310.0" layoutY="105.0" opacity="0.0" text="Erreur" textFill="RED" />
+            </children>
+        </Pane>
+        <Label layoutX="271.0" layoutY="24.0" styleClass="titleLabel" text="Afficher une nouvelle" textFill="#ffffffad">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+        <Pane fx:id="articlePane" layoutX="23.0" layoutY="311.0" prefHeight="270.0" prefWidth="679.0" style="-fx-background-color: #ffffff44;" styleClass="pane" stylesheets="@style/style.css">
+            <children>
+                <Label layoutX="8.0" layoutY="37.0" styleClass="subtitleLabel" text="Contenu" />
+                <RadioButton fx:id="articleRB" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" onAction="#toggleNewsPane" selected="true" styleClass="checkbox" text="Article">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="type" />
+                    </toggleGroup>
+                </RadioButton>
+                <TextArea fx:id="contenuTextArea" layoutX="88.0" layoutY="27.0" prefHeight="214.0" prefWidth="580.0" />
+                <CheckBox fx:id="electroniqueCheckBox" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" styleClass="checkbox" text="Seulement en version electronique" />
+            <Label fx:id="articleTextError" layoutX="90.0" layoutY="6.0" opacity="0.0" text="Erreur" textFill="RED" />
+            </children>
+        </Pane>
+        <Label layoutX="39.0" layoutY="272.0" prefHeight="30.0" prefWidth="171.0" styleClass="subtitleLabel" text="Le type d'une nouvelle">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="383.0" layoutY="75.0" styleClass="subtitleLabel" text="Auteurs d'une nouvelle">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Pane fx:id="addAuthorPane" layoutX="383.0" layoutY="201.0" prefHeight="101.0" prefWidth="337.0">
+            <children>
+                <Label layoutX="14.0" layoutY="12.0" opacity="0.0" text="Nom" />
+                <Label layoutX="14.0" layoutY="46.0" opacity="0.0" text="Prenom" />
+                <TextField fx:id="nomLabel" layoutX="116.0" layoutY="8.0" opacity="0.0" prefHeight="25.0" prefWidth="167.0" />
+                <TextField fx:id="prenomLabel" layoutX="115.0" layoutY="42.0" opacity="0.0" prefHeight="25.0" prefWidth="167.0" />
+            <Button fx:id="addAuthorButton" layoutX="133.0" layoutY="72.0" mnemonicParsing="false" onAction="#addAuthor" opacity="0.0" text="Ajouter" />
+            <Label fx:id="nomTextError" layoutX="286.0" layoutY="12.0" opacity="0.0" text="Erreur" textFill="RED" />
+            <Label fx:id="prenomTextError" layoutX="286.0" layoutY="46.0" opacity="0.0" text="Erreur" textFill="RED" />
+            </children>
+        </Pane>
+        <Pane id="panePhoto" fx:id="panePhoto" layoutX="23.0" layoutY="587.0" prefHeight="145.0" prefWidth="679.0" style="-fx-background-color: #ffffff44;" stylesheets="@style/style.css">
+            <children>
+                <RadioButton fx:id="photoRB" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" onAction="#toggleNewsPane" styleClass="checkbox" text="Photo" toggleGroup="$type" />
+                <Button fx:id="loadFileButton" layoutX="12.0" layoutY="41.0" onAction="#uploadFileAction" text="Telecharger un fichier local" textOverrun="WORD_ELLIPSIS" />
+                <Label fx:id="infoLabel" layoutX="14.0" layoutY="85.0" opacity="0.6" text="Information:" />
+                <CheckBox fx:id="coloredCheckBox" disable="true" layoutX="14.0" layoutY="111.0" mnemonicParsing="false" selected="true" styleClass="checkbox" text="Coloree" />
+            <Button fx:id="loadUrlButton" layoutX="222.0" layoutY="41.0" onAction="#uploadUrlAction" text="Telecharger de source URL" textOverrun="WORD_ELLIPSIS" />
+            <Label fx:id="photoImageError" layoutX="92.0" layoutY="4.0" opacity="0.0" text="Erreur" textFill="RED" />
+            </children>
+        </Pane>
+      <BorderPane fx:id="existentAuthorPane" layoutX="383.0" layoutY="121.0" prefHeight="80.0" prefWidth="289.0" style="-fx-background-color: #ffffff44;" styleClass="pane" />
+      <Label fx:id="authorTextError" layoutX="656.0" layoutY="79.0" opacity="0.0" text="Erreur" textFill="RED" />
+      <Button fx:id="prevoirButton" alignment="CENTER" defaultButton="true" layoutX="387.0" layoutY="745.0" mnemonicParsing="false" onAction="#newsPreview" prefHeight="44.0" prefWidth="202.0" style="-fx-graphic: url('https://cdn1.iconfinder.com/data/icons/freeline/32/eye_preview_see_seen_view-24.png');" text="Prevoir" textAlignment="RIGHT">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+          <Label layoutX="39.0" layoutY="77.0" styleClass="subtitleLabel" text="Information general">
+              <font>
+                  <Font size="18.0" />
+              </font>
+          </Label>
+    </children>
+</AnchorPane>

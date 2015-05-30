@@ -9,10 +9,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="645.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" fx:controller="ui.ArticlePreviewWindowController">
+<AnchorPane id="AnchorPane" prefHeight="645.0" prefWidth="605.0" style="-fx-background-image: url('http://www.wallpaperup.com/uploads/wallpapers/2012/10/03/17962/d73fe7b80aab975600d1f1a3c91a3bd0.jpg');" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ArticlePreviewWindowController">
     <children>
-       <fx:include source="ArticleInfo.fxml"/>    
-        <Button layoutX="268.0" layoutY="594.0" mnemonicParsing="false" onAction="#publishButtonAction" text="Publier">
+       <fx:include source="ArticleInfo1.fxml" />    
+        <Button layoutX="268.0" layoutY="594.0" mnemonicParsing="false" onAction="#publishButtonAction" prefHeight="41.0" prefWidth="132.0" style="-fx-graphic: url('https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_publish_48px-24.png');" text="Publier">
             <font>
                 <Font size="15.0" />
             </font>

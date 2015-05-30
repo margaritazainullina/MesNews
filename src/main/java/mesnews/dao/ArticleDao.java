@@ -2,6 +2,7 @@ package mesnews.dao;
 
 import mesnews.util.HibernateUtil;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.List;
 import mesnews.model.Article;
 
@@ -21,9 +22,9 @@ public class ArticleDao {
     public static Article readArticle(int id) {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
-        Article auteur = (Article) session.get(Article.class, id);
+        Article a = (Article) session.get(Article.class, id);
         session.close();
-        return auteur;
+        return a;
     }
 
     public static Article saveArticle(Article article) {

@@ -9,18 +9,24 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import mesnews.Lire;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 /**
@@ -29,7 +35,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "ARTICLE")
-public class Article extends News {
+public class Article extends News implements Cloneable {
 
     @Id
     @GeneratedValue
@@ -40,14 +46,23 @@ public class Article extends News {
     private String contenu;
     @Column(name = "siElectronique")
     private boolean siElectronique;
-    @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER)
-    private Set<Auteur> article_auteurs = new HashSet<Auteur>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "article_auteur",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "auteur_id"))
+    private Set<Auteur> article_auteurs = new HashSet<>();
 
     public Article(String titre, LocalDate date, Set<Auteur> auteurs, URL source, String contenu, boolean siElectronique) {
         super(titre, date, source);
         this.contenu = contenu;
         this.article_auteurs = auteurs;
         this.siElectronique = siElectronique;
+    }
+
+    @Override
+    public News clone() throws CloneNotSupportedException {
+        return (Article) super.clone();
     }
 
     public int getId() {
@@ -64,26 +79,6 @@ public class Article extends News {
 
     public void setArticle_auteurs(Set<Auteur> article_auteurs) {
         this.article_auteurs = article_auteurs;
-    }
-
-    public void inserer() {
-        super.inserer();
-        System.out.println("Entrez le contenu");
-        this.contenu = (Lire.S());
-
-        System.out.println("Entrez 'y' si la nouvelle est electronique, 'n' si non");
-        switch (Lire.S()) {
-            case "y": {
-                this.siElectronique = true;
-                break;
-            }
-            case "n": {
-                this.siElectronique = false;
-                break;
-            }
-            default:
-                System.err.println("Erreur");
-        }
     }
 
     public Article() {

@@ -102,7 +102,12 @@
             <version>2.4</version>
         </dependency>
 
-             
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.0.5</version>
+        </dependency>
+
         <!--Database persistence-->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -159,5 +164,12 @@
             <version>2.1</version>
             <type>jar</type>
         </dependency>
+        
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.20.8</version>
+        </dependency>
+
     </dependencies>
 </project>

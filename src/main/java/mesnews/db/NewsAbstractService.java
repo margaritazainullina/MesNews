@@ -6,6 +6,7 @@
 package mesnews.db;
 
 import java.io.IOException;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.persistence.EntityManager;
+import mesnews.model.Auteur;
 import mesnews.model.News;
+import mesnews.util.HibernateUtil;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -28,6 +32,10 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.store.RAMDirectory;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 /**
  *
@@ -40,8 +48,19 @@ public abstract class NewsAbstractService {
     public static Searcher searcher;
     public static RAMDirectory idx;
 
+    public static NewsAbstractService INSTANCE = null;
+
+    protected NewsAbstractService() {
+    }
+
+    //private consructor for singletone
+    //gets instance of heir class and assigns it to itself
+    public static void initWithConcreteService(NewsAbstractService instance) throws Exception {
+     INSTANCE = instance;
+    }
+
     //getteurs and setteurs pour collection
-    public static TreeSet<News> getNews() {
+    public TreeSet<News> getNews() {
         return news;
     }
 
@@ -50,20 +69,11 @@ public abstract class NewsAbstractService {
     }
 
     //ajoute une nouvelle
-    public static void ajouter(News n) {
-        news.add(n);
-    }
+    public abstract void add(News n);
 
-    public static void afficher() {
-        if (news.isEmpty()) {
-            System.out.println("La base est vide!");
-        } else {
-            System.out.println("Un total de " + news.size() + " entr�es");
-        }
-        news.stream().forEach((n) -> {
-            System.out.println(n);
-        });
-    }
+    public abstract void update(News oldEntry, News newEntry);
+
+    public abstract void delete(News n);
 
     public static Set<News> getNewsSortedByTitre() {
         Set newSet = new TreeSet(News.NewsComparator.TITRE);
@@ -97,7 +107,7 @@ public abstract class NewsAbstractService {
 
     public static void indexNews() throws IOException {
         idx = new RAMDirectory();
-            
+
         //create overall index
         newsIndex = new IndexWriter(idx, new StandardAnalyzer(), true);
         for (News n : news) {
@@ -149,45 +159,6 @@ public abstract class NewsAbstractService {
 
     }
 
-    /**
-     * Searches for the given string in the "content" field
-     *
-     * @param queryString
-     * @return
-     * @throws org.apache.lucene.queryParser.ParseException
-     * @throws java.io.IOException
-     */
-    public static TreeSet<News> rechercher(String queryString)
-            throws ParseException, IOException {
-        // indexNews();
-        TreeSet<News> result = new TreeSet<>();
-        // Build a Query object
-        Query query = QueryParser.parse(
-                queryString, "titre", new StandardAnalyzer());
-
-        // Search for the query
-        Hits hits = searcher.search(query);
-
-        // Examine the Hits object to see if there were any matches
-        int hitCount = hits.length();
-        if (hitCount == 0) {
-            System.out.println(
-                    "No matches were found for \"" + queryString + "\"");
-        } else {
-            System.out.println("Hits for \""
-                    + queryString + "\" were found in quotes by:");
-
-            // Iterate over the Documents in the Hits object
-            for (int i = 0; i < hitCount; i++) {
-                Document doc = hits.doc(i);
-                String title = doc.get("title");
-                result.add(getNewsByTitle(title));
-            }
-        }
-        System.out.println();
-        return result;
-    }
-
     private static News getNewsByTitle(String title) {
         Iterator<News> it = news.iterator();
 
@@ -227,4 +198,8 @@ public abstract class NewsAbstractService {
         }
         return result;
     }
+
+    public abstract void storeAuthor(Auteur a);
+
+    public abstract List<Auteur> getAllAuthors();
 }

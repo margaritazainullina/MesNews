@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="605.0" style="-fx-background-image: url('http://www.wallpaperup.com/uploads/wallpapers/2012/10/03/17962/d73fe7b80aab975600d1f1a3c91a3bd0.jpg');" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ArticlePreviewWindowController">
+    <children>
+      <Pane layoutX="15.0" layoutY="21.0" prefHeight="565.0" prefWidth="572.0" styleClass="pane" stylesheets="@style/style.css" />
+        <Label id="titleLabel" fx:id="titleLabel" alignment="TOP_CENTER" layoutX="18.0" layoutY="21.0" prefHeight="51.0" prefWidth="572.0" styleClass="titleLabel" text="Title" wrapText="true">
+            <font>
+                <Font size="23.0" />
+            </font>
+        </Label>
+        <Label fx:id="authorLabel" layoutX="65.0" layoutY="551.0" styleClass="infoLabel" text="Label">
+            <font>
+                <Font name="System Italic" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="dateLabel" layoutX="487.0" layoutY="551.0" styleClass="infoLabel" text="Label">
+            <font>
+                <Font name="System Italic" size="12.0" />
+            </font>
+        </Label>    
+        
+        <Label fx:id="infoLabel" layoutX="65.0" layoutY="502.0" styleClass="infoLabel" text="Label" />
+        <Label fx:id="keywordsLabel" alignment="TOP_LEFT" layoutX="41.0" layoutY="55.0" prefHeight="59.0" prefWidth="529.0" styleClass="subtitleLabel" text="Label" wrapText="true" />
+      <TextArea fx:id="textArea" editable="false" layoutX="41.0" layoutY="117.0" prefHeight="370.0" prefWidth="529.0" wrapText="true" />
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="37.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('https://cdn0.iconfinder.com/data/icons/glyphpack/85/info-alt-24.png');" />
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="37.0" layoutY="546.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/user-24.png');" />
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="451.0" layoutY="546.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/calendar-24.png');;" />
+    </children>
+</AnchorPane>

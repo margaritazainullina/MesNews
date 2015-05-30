@@ -5,29 +5,41 @@
  */
 package mesnews.model;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import mesnews.Lire;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import ui.AddWindowController;
 
 /**
  *
@@ -49,14 +61,17 @@ public class Photo extends News {
     private int hauteur;
     @Column(name = "siColoree")
     private boolean siColoree;
-    @ManyToMany(mappedBy = "photos", fetch = FetchType.EAGER)
-    private Set<Auteur> photo_auteurs = new HashSet<Auteur>();
-    @Column(name = "image")
-    public byte[] image;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "photo_auteur",
+            joinColumns = @JoinColumn(name = "photo_id"),
+            inverseJoinColumns = @JoinColumn(name = "auteur_id"))
+    private Set<Auteur> photo_auteurs = new HashSet<>();
+    @Lob
+    @Column(name = "image", length = 1000000)
+    private byte[] image;
 
-    public Photo(int id, String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Set<Auteur> auteurs, URL source, byte[] image) {
+    public Photo(String format, int largeur, int hauteur, boolean siColoree, String titre, LocalDate date, Set<Auteur> auteurs, URL source, byte[] image) {
         super(titre, date, source);
-        this.id = id;
         this.format = format;
         this.largeur = largeur;
         this.hauteur = hauteur;
@@ -124,9 +139,13 @@ public class Photo extends News {
         return sb.toString().substring(0, sb.length() - 2);
     }
 
-    public File getImage() throws IOException {
-        File f = new File("image" + ".jpg");
-        FileUtils.writeByteArrayToFile(f, Base64.getDecoder().decode(image));
+    public File getImage() {
+        File f = null;
+        try {
+            f = new File("image" + ".jpg");
+            FileUtils.writeByteArrayToFile(f, Base64.getDecoder().decode(image));
+        } catch (Exception e) {
+        }
         return f;
     }
 
@@ -156,43 +175,6 @@ public class Photo extends News {
         inputStream.close();
         outputStream.close();
         return f;
-    }
-
-    public void inserer() {
-        super.inserer();
-        System.out.println("Entrez le format");
-        this.format = (Lire.S());
-
-        do {
-            System.out.println("Entrez le largeur");
-            try {
-                this.largeur = (Lire.i());
-            } catch (Exception e) {
-                System.err.println("Erreur");
-            }
-        } while (this.largeur == 0);
-        do {
-            System.out.println("Entrez le hauteur");
-            try {
-                this.hauteur = (Lire.i());
-            } catch (Exception e) {
-                System.err.println("Erreur");
-            }
-        } while (this.hauteur == 0);
-
-        System.out.println("Entrez 'y' si la photo est coloree, 'n' si non");
-        switch (Lire.S()) {
-            case "y": {
-                this.siColoree = true;
-                break;
-            }
-            case "n": {
-                this.siColoree = false;
-                break;
-            }
-            default:
-                System.err.println("Erreur");
-        }
     }
 
     public String info() {
@@ -245,7 +227,7 @@ public class Photo extends News {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+        return new HashCodeBuilder(19, 5). // two randomly chosen prime numbers
                 // if deriving: appendSuper(super.hashCode()).
                 append(titre).
                 append(date).
@@ -260,7 +242,7 @@ public class Photo extends News {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Photo)) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         if (obj == this) {
@@ -301,5 +283,13 @@ public class Photo extends News {
 
     public void addAuteur(Auteur photo_auteur) {
         this.photo_auteurs.add(photo_auteur);
+    }
+
+    @Override
+    public int compareTo(News another) {
+        if (!(another instanceof Photo)) {
+            return -1;
+        }
+        return 1;
     }
 }
